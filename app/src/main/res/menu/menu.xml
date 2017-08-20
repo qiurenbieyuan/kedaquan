@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".bbs.BBSDetailActivity">
+    <item
+        android:id="@+id/bbsdetail_menu_refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="刷新"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/bbsdetail_menu_goto"
+        android:orderInCategory="100"
+        android:title="跳转到.."
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/bbsdetail_menu_only"
+        android:orderInCategory="100"
+        android:title="只看楼主"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/bbsdetail_menu_show"
+        android:orderInCategory="100"
+        android:title="在浏览器中打开"
+        app:showAsAction="never" />
+
+
+</menu>

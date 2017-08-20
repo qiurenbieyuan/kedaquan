@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/find_header_banner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+    </com.youth.banner.Banner>
+
+    <com.xhb.jxnk25.maillineview.MailLineView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />
+</LinearLayout>

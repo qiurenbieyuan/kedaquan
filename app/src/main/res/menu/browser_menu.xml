@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/browser_menu_refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="刷新"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/browser_menu_goto"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:title="在浏览器中打开"
+        app:showAsAction="never" />
+</menu>

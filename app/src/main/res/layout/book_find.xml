@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/book_find_ti_back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_arraw_back_white" />
+
+        <EditText
+            android:id="@+id/book_find_ti_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:hint="在此输入书名"
+            android:textColorHint="@color/white"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorLink="@color/white" />
+
+        <ImageView
+            android:id="@+id/book_find_ti_find"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_arraw_find_white" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/book_find_bt_lend"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/book_find_bt_shape"
+        android:gravity="center"
+        android:text="查询我借的书"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/book_find_lr"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+</LinearLayout>

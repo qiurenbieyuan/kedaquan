@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:background="@drawable/pop_bg"
+    android:orientation="vertical">
+
+    <ListView
+        android:layout_weight="6"
+        android:id="@+id/weekList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+    </ListView>
+
+</LinearLayout>

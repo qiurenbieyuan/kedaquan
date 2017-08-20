@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/widget_single_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="Linux开发技术"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widget_single_2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="Linux开发技术"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widget_single_3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="Linux开发技术"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widget_single_4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="Linux开发技术"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widget_single_5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="Linux开发技术"
+        android:textSize="12sp" />
+</LinearLayout>

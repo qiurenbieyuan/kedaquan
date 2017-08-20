@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.yangs.just.activity.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/me_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/white">
+
+            <TextView
+                android:id="@+id/me_toolbar_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="我"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F0F3F6">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout style="@style/wrap_layout">
+
+                        <LinearLayout
+                            android:id="@+id/me_layout_login"
+                            style="@style/single_layout">
+
+                            <TextView
+                                android:id="@+id/me_tv_login"
+                                style="@style/usertext"
+                                android:text="未登录" />
+
+                            <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+
+                        <View style="@style/bg_line" />
+
+                        <LinearLayout
+                            android:id="@+id/me_layout_bbs"
+                            style="@style/mid_layout">
+
+                            <TextView
+                                android:id="@+id/me_tv_bbs"
+                                style="@style/usertext"
+                                android:text="论坛未登录" />
+
+                            <ImageView style="@style/img_arrow" />
+
+                        </LinearLayout>
+
+                        <View style="@style/bg_line" />
+
+                        <LinearLayout
+                            android:id="@+id/me_layout_myinfo"
+                            style="@style/bottom_layout">
+
+                            <TextView
+                                style="@style/usertext"
+                                android:text="个人资料" />
+
+                            <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout style="@style/wrap_layout">
+                        <!-- 上圆角-->
+                        <LinearLayout
+                            android:id="@+id/me_layout_advice"
+                            style="@style/top_layout">
+
+                            <TextView
+                                style="@style/usertext"
+                                android:text="一键反馈" />
+
+                            <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+                        <!-- 分割线 -->
+                        <View style="@style/bg_line" />
+                        <!-- 无圆角-->
+                        <LinearLayout
+                            android:id="@+id/me_layout_update"
+                            style="@style/mid_layout">
+
+                            <TextView
+                                style="@style/usertext"
+                                android:text="检测更新" />
+
+                            <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+
+                        <View style="@style/bg_line" />
+                        <!-- 下圆角-->
+                        <LinearLayout
+                            android:id="@+id/me_layout_about"
+                            style="@style/bottom_layout">
+
+                            <TextView
+                                style="@style/usertext"
+
+                                android:text="关于" />
+
+                            <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+

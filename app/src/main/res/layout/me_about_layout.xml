@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/me_about_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_app" />
+
+        <TextView
+            android:id="@+id/me_about_tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/wrap_layout3">
+
+            <LinearLayout
+                android:id="@+id/me_about_gw"
+                style="@style/single_layout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="官网"
+                    android:textColor="@color/gallery_black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/me_about_versioninfo"
+                style="@style/mid_layout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="版本说明"
+                    android:textColor="@color/gallery_black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/me_about_source"
+                style="@style/mid_layout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="数据来源"
+                    android:textColor="@color/gallery_black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/me_about_open"
+                style="@style/mid_layout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="开源许可"
+                    android:textColor="@color/gallery_black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/me_about_yangs"
+                style="@style/bottom_layout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="开发者博客"
+                    android:textColor="@color/gallery_black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Android : yangs"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:text="Web (Python) : Qian"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="3dp"
+            android:gravity="center"
+            android:text="©2017 myangs.com. All rights reserved."
+            android:textSize="13sp" />
+    </LinearLayout>
+</LinearLayout>

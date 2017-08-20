@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--4758b3 303F9F-->
+    <color name="colorPrimary">#1e89e7</color>
+    <color name="colorPrimaryDark">#176eb8</color>
+    <color name="colorAccent">#0077d8</color>
+    <color name="colorAccentPress">#ba0845</color>
+    <color name="colorGreen">#46bf1b</color>
+    <color name="colorTab">#989898</color>
+    <color name="colorTabPress">#0f87ea</color>
+    <color name="colorwhite">#ffffff</color>
+    <color name="colortoday">#8ed1d6</color>
+    <color name="colorgray">#ababab</color>
+    <color name="yellow">#fdc928</color>
+    <color name="yellow_press">#e5b524</color>
+    <color name="gray">#efeaea</color>
+    <!-- 描边颜色 -->
+    <color name="border_clo">#ccc</color>
+    <color name="color_00">#8A000000</color>
+    <color name="text_clo">#333</color>
+    <color name="white">#ffffff</color>
+    <color name="blue">#419de4</color>
+    <color name="colorDisableHintIcon">#71000000</color>
+    <color name="gallery_blue">#4758b3</color>
+    <color name="split">#000000</color>
+    <color name="tab">#90d7ec</color>
+</resources>
