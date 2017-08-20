@@ -33,7 +33,7 @@
 - [我的博客](http://www.myangs.com)
 - qq  [1125280130](tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1125280130)
 - Email     <yangs2012@qq.com>
-### 开源许可
+### 特别感谢以下开源
 - [jsoup](https://github.com/jhy/jsoup)
 - [okhttp](https://github.com/square/okhttp)
 - [banner](https://github.com/youth5201314/banner)
