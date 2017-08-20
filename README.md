@@ -15,7 +15,7 @@
 
 # <img src="https://github.com/yangs2012/kedaquan/blob/master/screenshot/book.png" width=360 height=640/>           <img src="https://github.com/yangs2012/kedaquan/blob/master/screenshot/find.png" width=360 height=640/>
 ### 联系我
-- QQ        1125280130
+- QQ        [1125280130](tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1125280130)
 - Email     <yangs2012@qq.com>
 ### 开源许可
 - [jsoup](https://github.com/jhy/jsoup)
