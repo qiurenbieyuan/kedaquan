@@ -40,10 +40,10 @@
 - [fresco](https://github.com/facebook/fresco)
 - [GalleryPick](https://github.com/YancyYe/GalleryPick)
 - [LRecyclerView](https://github.com/jdsjlzx/LRecyclerView)
-### [科大圈官网](http://www.onewanqian.cn:8000/)
 ### 特别感谢
     14焊接 Qian
     成绩绩点等相关Web端功能由他开发完成。
+#### [科大圈官网](http://www.onewanqian.cn:8000/)
 ### License
     Copyright 2017 yangs
 
