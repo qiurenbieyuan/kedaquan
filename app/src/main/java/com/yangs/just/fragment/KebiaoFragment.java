@@ -498,6 +498,8 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                             }
                         });
                     }
+                    if (cursor != null)
+                        cursor.close();
                     counts[i - 1] = j;
                 }
             }

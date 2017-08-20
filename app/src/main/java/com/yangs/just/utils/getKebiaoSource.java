@@ -97,6 +97,9 @@ public class getKebiaoSource {
             }
         } catch (Exception e) {
             APPAplication.showToast(e.getMessage(), 1);
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
         APPAplication.save.edit().putString("xh", this.xh).putString("pwd", this.pwd).putString("term", year).apply();
         APPAplication.db.execSQL("create table course(id INTEGER PRIMARY KEY AUTOINCREMENT,课程名 TEXT,课程代码 TEXT,教室 TEXT,老师 TEXT,星期 INTEGER,节次 INTEGER,周次 TEXT,颜色代码 INTEGER);");
@@ -148,6 +151,9 @@ public class getKebiaoSource {
                                     color = cursor.getInt(8);
                                 } catch (Exception ee) {
                                     color = color_no_again_control++;
+                                } finally {
+                                    if (cursor != null)
+                                        cursor.close();
                                 }
                                 cv.put("颜色代码", color + "");
                                 APPAplication.db.insert("course", null, cv);
