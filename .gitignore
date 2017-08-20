@@ -13,6 +13,5 @@ local.properties
 .idea/gradle.xml
 .idea/libraries
 reports/
-
 # Keystore files
 *.jks
