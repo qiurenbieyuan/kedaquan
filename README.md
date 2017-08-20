@@ -9,9 +9,9 @@
 - 一键评教
 - 图书搜索
 ### 软件截图
-# ![Mou icon](/screenshot/kebiao.jpg)![Mou icon](/screenshot/kebiao.jpg)
-# ![Mou icon](/screenshot/kebiao.jpg)![Mou icon](/screenshot/kebiao.jpg)
-# ![Mou icon](/screenshot/kebiao.jpg)
+# ![Mou icon](https://github.com/yangs2012/kedaquan/blob/master/screenshot/kebiao.png) ![Mou icon](https://github.com/yangs2012/kedaquan/blob/master/screenshot/score.png)
+# ![Mou icon](https://github.com/yangs2012/kedaquan/blob/master/screenshot/bbs.png) ![Mou icon](https://github.com/yangs2012/kedaquan/blob/master/screenshot/coursePj.png)
+# ![Mou icon](https://github.com/yangs2012/kedaquan/blob/master/screenshot/book.png)
 ### 联系我
 - QQ        1125280130
 - Email     <yangs2012@qq.com>
