@@ -1,7 +1,7 @@
 package com.yangs.just.bbs;
 
 /**
- * Created by winutalk on 2017/8/3.
+ * Created by yangs on 2017/8/3.
  */
 
 public class BBSDetail {

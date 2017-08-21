@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/3/18.
+ * Created by yangs on 2017/3/18.
  */
 
 public class APPAplication extends Application {
@@ -46,7 +46,7 @@ public class APPAplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        debug = true;
+        debug = false;
         bbs_login_status = false;
         bbs_login_status_check = false;
         context = getApplicationContext();
@@ -61,7 +61,8 @@ public class APPAplication extends Application {
         }
         try {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            week = (int) (1 + (Calendar.getInstance().getTime().getTime() - df.parse("2017-9-4").getTime()) / (1000 * 3600 * 24 * 7));
+            week = (int) (1 + (Calendar.getInstance().getTime().getTime() - df.parse("2017-9-4")
+                    .getTime()) / (1000 * 3600 * 24 * 7));
             if (week < 1 || week > 20)
                 week = 1;
         } catch (ParseException e) {
@@ -69,7 +70,8 @@ public class APPAplication extends Application {
             e.printStackTrace();
         }
         try {
-            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName()
+                    , 0);
             version = packageInfo.versionName;
         } catch (Exception e) {
             version = "1.0";

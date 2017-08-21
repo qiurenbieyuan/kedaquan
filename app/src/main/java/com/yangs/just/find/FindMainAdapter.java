@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by winutalk on 2017/7/30.
+ * Created by yangs on 2017/7/30.
  */
 
 public class FindMainAdapter extends RecyclerView.Adapter<FindMainAdapter.ViewHolder> {

@@ -20,7 +20,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by winutalk on 2017/7/30.
+ * Created by yangs on 2017/7/30.
  */
 
 public class CoursePjSource {

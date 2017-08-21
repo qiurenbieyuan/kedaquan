@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/8/3.
+ * Created by yangs on 2017/8/3.
  */
 
 public class BBSDetailActivity extends AppCompatActivity implements OnItemClickListener

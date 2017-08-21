@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/5/10.
+ * Created by yangs on 2017/5/10.
  */
 
 public class Book_Find extends Activity implements View.OnClickListener, View.OnKeyListener, OnRefreshListener, OnItemClickListener, OnLoadMoreListener {

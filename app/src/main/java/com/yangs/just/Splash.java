@@ -8,7 +8,7 @@ import android.os.Handler;
 import com.yangs.just.activity.MainActivity;
 
 /**
- * Created by winutalk on 2017/2/27.
+ * Created by yangs on 2017/2/27.
  */
 
 public class Splash extends Activity {

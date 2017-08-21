@@ -1,7 +1,7 @@
 package com.yangs.just.coursepj;
 
 /**
- * Created by winutalk on 2017/7/30.
+ * Created by yangs on 2017/7/30.
  */
 
 public class CoursePJList {

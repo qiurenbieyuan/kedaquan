@@ -21,7 +21,7 @@ import com.yangs.just.activity.Browser;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/8/3.
+ * Created by yangs on 2017/8/3.
  */
 
 public class BBSDetailAdapter extends RecyclerView.Adapter<BBSDetailAdapter.ViewHolder> {

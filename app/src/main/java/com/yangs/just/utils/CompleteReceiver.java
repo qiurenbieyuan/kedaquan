@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.io.File;
 
 /**
- * Created by winutalk on 2017/3/1.
+ * Created by yangs on 2017/3/1.
  */
 
 public class CompleteReceiver extends BroadcastReceiver {

@@ -15,7 +15,7 @@ import com.yangs.just.R;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/8/2.
+ * Created by yangs on 2017/8/2.
  */
 
 public class BBSAdapter extends RecyclerView.Adapter<BBSAdapter.ViewHolder> {

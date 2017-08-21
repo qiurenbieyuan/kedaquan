@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/4/22.
+ * Created by yangs on 2017/4/22.
  */
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {

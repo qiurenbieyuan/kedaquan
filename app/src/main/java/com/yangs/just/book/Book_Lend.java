@@ -35,7 +35,7 @@ import com.yangs.just.activity.TitleBuilder;
 import java.util.ArrayList;
 
 /**
- * Created by winutalk on 2017/4/22.
+ * Created by yangs on 2017/4/22.
  */
 
 public class Book_Lend extends Activity implements OnRefreshListener {

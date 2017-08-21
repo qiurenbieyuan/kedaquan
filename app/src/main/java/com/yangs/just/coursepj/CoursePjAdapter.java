@@ -12,7 +12,7 @@ import com.yangs.just.R;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/7/30.
+ * Created by yangs on 2017/7/30.
  */
 
 public class CoursePjAdapter extends RecyclerView.Adapter<CoursePjAdapter.ViewHolder> {

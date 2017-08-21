@@ -41,7 +41,7 @@ import java.util.List;
 import static com.yangs.just.activity.APPAplication.bbsSource;
 
 /**
- * Created by winutalk on 2017/8/6.
+ * Created by yangs on 2017/8/6.
  */
 
 public class BBSFragment extends LazyLoadFragment implements OnItemClickListener, OnItemLongClickListener, OnRefreshListener, View.OnClickListener,

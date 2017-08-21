@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/7/30.
+ * Created by yangs on 2017/7/30.
  */
 
 public class CoursePJ extends Activity implements View.OnClickListener, OnItemClickListener, OnRefreshListener {
