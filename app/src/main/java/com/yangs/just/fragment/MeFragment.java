@@ -48,7 +48,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/5/6.
+ * Created by yangs on 2017/5/6.
  */
 
 public class MeFragment extends Fragment implements View.OnClickListener {

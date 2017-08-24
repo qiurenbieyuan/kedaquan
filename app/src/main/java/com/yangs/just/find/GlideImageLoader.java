@@ -9,7 +9,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.youth.banner.loader.ImageLoader;
 
 /**
- * Created by winutalk on 2017/4/27.
+ * Created by yangs on 2017/4/27.
  */
 public class GlideImageLoader extends ImageLoader {
     private View view;

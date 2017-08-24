@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/5/10.
+ * Created by yangs on 2017/5/10.
  */
 
 public class BookFindAdapter extends RecyclerView.Adapter<BookFindAdapter.ViewHolder> {

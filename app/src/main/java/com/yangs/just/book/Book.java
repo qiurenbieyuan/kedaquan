@@ -3,7 +3,7 @@ package com.yangs.just.book;
 import java.io.Serializable;
 
 /**
- * Created by winutalk on 2017/4/22.
+ * Created by yangs on 2017/4/22.
  */
 
 public class Book implements Serializable {

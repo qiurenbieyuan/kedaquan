@@ -1,7 +1,7 @@
 package com.yangs.just.score;
 
 /**
- * Created by winutalk on 2017/8/1.
+ * Created by yangs on 2017/8/1.
  */
 
 public class Score {

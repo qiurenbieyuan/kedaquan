@@ -12,7 +12,7 @@ import com.yangs.just.R;
 import java.util.List;
 
 /**
- * Created by winutalk on 2017/8/1.
+ * Created by yangs on 2017/8/1.
  */
 
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> {

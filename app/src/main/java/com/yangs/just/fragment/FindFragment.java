@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by winutalk on 2017/5/6.
+ * Created by yangs on 2017/5/6.
  */
 
 public class FindFragment extends LazyLoadFragment implements OnBannerListener, OnItemClickListener, OnRefreshListener, OnItemLongClickListener {

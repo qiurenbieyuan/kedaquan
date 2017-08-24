@@ -1,6 +1,6 @@
 package com.yangs.just.activity;
 /**
- * Created by winutalk on 2017/2/14.
+ * Created by yangs on 2017/2/14.
  */
 
 import android.app.Activity;

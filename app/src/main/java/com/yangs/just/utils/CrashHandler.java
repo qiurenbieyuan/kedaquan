@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Created by winutalk on 2017/3/18.
+ * Created by yangs on 2017/3/18.
  */
 
 public class CrashHandler implements UncaughtExceptionHandler {

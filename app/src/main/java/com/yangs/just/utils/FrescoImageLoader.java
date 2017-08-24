@@ -21,7 +21,7 @@ import com.yancy.gallerypick.widget.GalleryImageView;
 import com.yangs.just.R;
 
 /**
- * Created by winutalk on 2017/4/28.
+ * Created by yangs on 2017/4/28.
  */
 public class FrescoImageLoader implements ImageLoader {
 

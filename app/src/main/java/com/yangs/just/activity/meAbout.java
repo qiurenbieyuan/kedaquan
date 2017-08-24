@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.yangs.just.R;
 
 /**
- * Created by winutalk on 2017/2/24.
+ * Created by yangs on 2017/2/24.
  */
 
 public class meAbout extends AppCompatActivity implements View.OnClickListener {

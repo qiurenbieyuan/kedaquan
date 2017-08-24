@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.yangs.just.R;
 
 /**
- * Created by winutalk on 2017/2/16.
+ * Created by yangs on 2017/2/16.
  */
 
 public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {

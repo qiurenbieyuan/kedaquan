@@ -1,7 +1,7 @@
 package com.yangs.just.book;
 
 /**
- * Created by winutalk on 2017/5/10.
+ * Created by yangs on 2017/5/10.
  */
 
 public class Book2 {

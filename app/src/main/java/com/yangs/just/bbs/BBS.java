@@ -3,7 +3,7 @@ package com.yangs.just.bbs;
 import android.graphics.Color;
 
 /**
- * Created by winutalk on 2017/8/2.
+ * Created by yangs on 2017/8/2.
  */
 
 public class BBS {
