@@ -80,8 +80,9 @@ public class BookSource {
                 Request request2 = new Request.Builder().url("http://202.195.195.137:8080/reader/book_lst.php")
                         .headers(requestHeaders).header("cookie", cookie).build();
                 String sql = "select count(*) as c from Sqlite_master  where type ='table' and name ='book';";
-                Cursor cursor = APPAplication.db.rawQuery(sql, null);
+                Cursor cursor = null;
                 try {
+                    cursor = APPAplication.db.rawQuery(sql, null);
                     if (cursor.moveToNext()) {
                         int count = cursor.getInt(0);
                         if (count > 0) {
@@ -90,6 +91,9 @@ public class BookSource {
                     }
                 } catch (Exception e) {
                     APPAplication.showToast(e.getMessage(), 1);
+                } finally {
+                    if (cursor != null)
+                        cursor.close();
                 }
                 APPAplication.db.execSQL("create table book(id INTEGER PRIMARY KEY AUTOINCREMENT,书名 TEXT,编号 TEXT,开始 TEXT,结束 TEXT,续借次数 INTEGER);");
                 try {

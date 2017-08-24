@@ -106,48 +106,55 @@ public class AppWidget extends AppWidgetProvider {
             RemoteViews nestedView = new RemoteViews(context.getPackageName(), R.layout.widget_single_layout);
             for (int j = 1; j <= 5; j++) {
                 String sql = "select * from course where 星期=" + i + " and 节次=" + j + ";";
-                Cursor cursor = APPAplication.db.rawQuery(sql, null);
-                if (cursor.getCount() > 0) {
-                    if (cursor.moveToFirst()) {
-                        do {
-                            String[] t5 = cursor.getString(7).replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
-                            boolean flag = false;
-                            try {
-                                for (int n = 0; n < t5.length; n++) {
-                                    String[] t6 = t5[n].split("-");
-                                    int start, end;
-                                    start = Integer.parseInt(t6[0]);
-                                    try {
-                                        end = Integer.parseInt(t6[1]);
-                                    } catch (Exception e) {
-                                        end = start;
-                                    }
-                                    if (start <= week && week <= end) {
-                                        flag = true;
-                                        break;
-                                    } else {
-                                        if (n == t5.length - 1) {
+                Cursor cursor = null;
+                try {
+                    cursor = APPAplication.db.rawQuery(sql, null);
+                    if (cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                String[] t5 = cursor.getString(7).replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
+                                boolean flag = false;
+                                try {
+                                    for (int n = 0; n < t5.length; n++) {
+                                        String[] t6 = t5[n].split("-");
+                                        int start, end;
+                                        start = Integer.parseInt(t6[0]);
+                                        try {
+                                            end = Integer.parseInt(t6[1]);
+                                        } catch (Exception e) {
+                                            end = start;
+                                        }
+                                        if (start <= week && week <= end) {
+                                            flag = true;
                                             break;
+                                        } else {
+                                            if (n == t5.length - 1) {
+                                                break;
+                                            }
                                         }
                                     }
-                                }
-                            } catch (Exception e) {
+                                } catch (Exception e) {
 
-                            }
-                            if (flag) {
-                                nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", myImageList.get(Integer.parseInt(cursor.getString(8))));
-                            } else {
-                                nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", R.drawable.textview_border_hui);
-                                nestedView.setTextColor(single_index.get(j - 1), Color.rgb(167, 174, 174));
-                            }
-                            if (!TextUtils.isEmpty(cursor.getString(3).trim()))
-                                nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1) + "@" + cursor.getString(3));
-                            else
-                                nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1));
-                        } while (cursor.moveToNext());
+                                }
+                                if (flag) {
+                                    nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", myImageList.get(Integer.parseInt(cursor.getString(8))));
+                                } else {
+                                    nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", R.drawable.textview_border_hui);
+                                    nestedView.setTextColor(single_index.get(j - 1), Color.rgb(167, 174, 174));
+                                }
+                                if (!TextUtils.isEmpty(cursor.getString(3).trim()))
+                                    nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1) + "@" + cursor.getString(3));
+                                else
+                                    nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1));
+                            } while (cursor.moveToNext());
+                        }
+                    } else {
+                        nestedView.setTextViewText(single_index.get(j - 1), "");
                     }
-                } else {
-                    nestedView.setTextViewText(single_index.get(j - 1), "");
+                } catch (Exception e) {
+                } finally {
+                    if (cursor != null)
+                        cursor.close();
                 }
             }
             remoteViews.addView(single_list.get(i - 1), nestedView);

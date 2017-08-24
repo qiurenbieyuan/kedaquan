@@ -77,7 +77,8 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                bar.getProgressDrawable().setColorFilter(Color.rgb(51, 122, 183), android.graphics.PorterDuff.Mode.SRC_IN);
+                bar.getProgressDrawable().setColorFilter(Color.rgb(51, 122, 183),
+                        android.graphics.PorterDuff.Mode.SRC_IN);
                 if (newProgress == 100) {
                     bar.setVisibility(View.GONE);
                     if (view.getUrl().contains("http://202.195.195.198")) {
