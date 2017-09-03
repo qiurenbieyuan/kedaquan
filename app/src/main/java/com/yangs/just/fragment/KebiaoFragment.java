@@ -104,6 +104,7 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.kebiao_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -272,9 +273,11 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
 
     public void initKebiao() {
         try {
-            for (int nn = 0; nn < 7; nn++)       //刷新格子
-                linearLayout[nn].removeAllViews();
             counts = new int[7];
+            for (int nn = 0; nn < 7; nn++) {      //刷新格子
+                linearLayout[nn].removeAllViews();
+                counts[nn] = 0;
+            }
             kebiao_extra.setText(" 备注 :\n");
             kebiao_extra.setTextColor(Color.rgb(27, 124, 220));
             for (String t : APPAplication.save.getString("extra", "").split(";")) {
@@ -308,7 +311,8 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                             textView.setPadding(5, 15, 5, 15);
                             textView.setGravity(Gravity.CENTER_HORIZONTAL);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, heightPixels / 6);
-                            params.setMargins(0, (j - 1 - counts[i - 1]) * heightPixels / 6 + (j - 1 - counts[i - 1] + 1) * 6, 0, 0); //left,top,right, bottom
+                            //params.setMargins(0, (j - 1 - counts[i - 1]) * heightPixels / 6 + (j - 1 - counts[i - 1] + 1) * 6, 0, 0); //left,top,right, bottom
+                            params.setMargins(0, (j - 1 - counts[i - 1]) * heightPixels / 6 + (j - counts[i - 1]) * 6, 0, 0);
                             textView.setLayoutParams(params);
                             linearLayout[i - 1].addView(textView);
                             for (int m = 0; m < course_info.size(); m++) {
@@ -402,6 +406,7 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
 
                                 }
                             });
+                            counts[i - 1] = j;
                         }
                     } catch (Exception e) {
                         APPAplication.showDialog(getContext(), e.toString());
@@ -409,7 +414,6 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                         if (cursor != null)
                             cursor.close();
                     }
-                    counts[i - 1] = j;
                 }
             }
         } catch (Exception e) {
