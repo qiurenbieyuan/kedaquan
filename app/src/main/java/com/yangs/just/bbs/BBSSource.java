@@ -42,6 +42,7 @@ public class BBSSource {
     private String hash = "";
     private Context context;
     private int page = 0;
+    private int currentPage = 0;
     private int bigPage = 0;
 
     public BBSSource() {
@@ -59,6 +60,10 @@ public class BBSSource {
 
     public int getPage() {
         return page;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 
     public int getBigpage() {
@@ -150,8 +155,9 @@ public class BBSSource {
     }
 
     public List<BBS> getList(String url) {
-        List<BBS> list = new ArrayList<BBS>();
-        Request request = new Request.Builder().url(url).headers(requestHeaders).header("cookie", cookie).build();
+        List<BBS> list = new ArrayList<>();
+        Request request = new Request.Builder().url(url).headers(requestHeaders).header("cookie", cookie)
+                .build();
         try {
             Response response = mOkHttpClient.newCall(request).execute();
             Document document = Jsoup.parse(response.body().string());
@@ -181,13 +187,55 @@ public class BBSSource {
                 list.add(bbs);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
 
+    public List<BBSReply> getReplyList(String url) {
+        List<BBSReply> list = new ArrayList<>();
+        Request request = new Request.Builder().url(url).headers(requestHeaders)
+                .header("cookie", cookie).build();
+        try {
+            Response response = mOkHttpClient.newCall(request).execute();
+            Document document = Jsoup.parse(response.body().string());
+            Elements elements = document.select("dl.cl ");
+            if (elements.size() == 0)
+                return list;
+            for (Element element : elements) {
+                BBSReply bbsReply = new BBSReply();
+                bbsReply.setAvatar(element.select("dd.m.avt.mbn").first().select("img").attr("src"));
+                bbsReply.setTime(element.select("dt").select("span").text());
+                Elements e2 = element.select("dd.ntc_body").select("a");
+                bbsReply.setUserUrl("http://www.myangs.com:81/" + e2.get(0).attr("href"));
+                bbsReply.setUser(e2.get(0).text());
+                bbsReply.setUrl("http://www.myangs.com:81/" + e2.get(1).attr("href") + "&mobile=2");
+                bbsReply.setTitle(e2.get(1).text());
+                list.add(bbsReply);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public String getRedirectUrl(String url) {
+        String s = null;
+        Request request = new Request.Builder().url(url).headers(requestHeaders)
+                .header("cookie", cookie).build();
+        try {
+            Response response = mOkHttpClient.newCall(request).execute();
+            s = response.header("Location");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
     public List<BBSDetail> getDetailList(String url) {
         List<BBSDetail> list = new ArrayList<BBSDetail>();
-        Request request = new Request.Builder().url(url).headers(requestHeaders).header("cookie", cookie).build();
+        Request request = new Request.Builder().url(url).headers(requestHeaders)
+                .header("cookie", cookie).build();
         try {
             Response response = mOkHttpClient.newCall(request).execute();
             Document document = Jsoup.parse(response.body().string());
@@ -203,8 +251,10 @@ public class BBSSource {
             try {
                 page = Integer.parseInt(document.select("div.pg").select("span").attr("title")
                         .replaceAll("共", "").replaceAll("页", "").replaceAll("\\s", ""));
+                currentPage = Integer.parseInt(document.select("input.px").attr("value"));
             } catch (Exception e) {
                 page = 1;
+                currentPage = 1;
             }
             Elements elements = document.select("div.plc.cl");
             for (int i = 0; i < elements.size() - 1; i++) {

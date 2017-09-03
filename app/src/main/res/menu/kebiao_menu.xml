@@ -2,23 +2,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/kebiao_menu_refresh"
+        android:icon="@drawable/ic_add_black_24dp"
         android:orderInCategory="100"
-        android:title="刷新课表"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/kebiao_menu_changeterm"
-        android:orderInCategory="100"
-        android:title="更改学期"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/kebiao_menu_changebg"
-        android:orderInCategory="100"
-        android:title="更改背景"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/kebiao_menu_change"
-        android:orderInCategory="100"
-        android:title="切换课表显示方法"
-        app:showAsAction="never" />
+        android:title="选项"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/kebiao_menu_add"
+                android:orderInCategory="100"
+                android:title="添加课程"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/kebiao_menu_refresh"
+                android:orderInCategory="100"
+                android:title="更新课表"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/kebiao_menu_changeterm"
+                android:orderInCategory="100"
+                android:title="更改学期"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/kebiao_menu_changebg"
+                android:orderInCategory="100"
+                android:title="更改背景"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/kebiao_menu_change"
+                android:orderInCategory="100"
+                android:title="不上的课不显示"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

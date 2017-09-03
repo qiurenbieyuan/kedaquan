@@ -10,11 +10,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.yangs.just.activity.APPAplication;
+import com.yangs.just.activity.KebiaoDialogActivity;
+import com.yangs.just.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,48 +113,82 @@ public class AppWidget extends AppWidgetProvider {
                 try {
                     cursor = APPAplication.db.rawQuery(sql, null);
                     if (cursor.getCount() > 0) {
+                        List<HashMap<String, String>> course_info = new ArrayList<>();
                         if (cursor.moveToFirst()) {
                             do {
-                                String[] t5 = cursor.getString(7).replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
-                                boolean flag = false;
-                                try {
-                                    for (int n = 0; n < t5.length; n++) {
-                                        String[] t6 = t5[n].split("-");
-                                        int start, end;
-                                        start = Integer.parseInt(t6[0]);
-                                        try {
-                                            end = Integer.parseInt(t6[1]);
-                                        } catch (Exception e) {
-                                            end = start;
-                                        }
-                                        if (start <= week && week <= end) {
-                                            flag = true;
+                                HashMap<String, String> map = new HashMap<>();
+                                map.put("课程代码", cursor.getString(cursor.getColumnIndex("课程代码")));
+                                map.put("课程名", cursor.getString(cursor.getColumnIndex("课程名")));
+                                map.put("老师", cursor.getString(cursor.getColumnIndex("老师")));
+                                map.put("教室", cursor.getString(cursor.getColumnIndex("教室")));
+                                map.put("节次", i + " " + j);
+                                map.put("颜色代码", cursor.getString(cursor.getColumnIndex("颜色代码")));
+                                map.put("周次", cursor.getString(cursor.getColumnIndex("周次")));
+                                map.put("index", cursor.getInt(0) + "");
+                                course_info.add(map);
+                            } while (cursor.moveToNext());
+                        }
+                        boolean flag = false;
+                        for (int m = 0; m < course_info.size(); m++) {
+                            try {
+                                String[] t5 = course_info.get(m).get("周次")
+                                        .replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
+                                for (int n = 0; n < t5.length; n++) {
+                                    String[] t6 = t5[n].split("-");
+                                    int start, end;
+                                    start = Integer.parseInt(t6[0]);
+                                    try {
+                                        end = Integer.parseInt(t6[1]);
+                                    } catch (Exception e) {
+                                        end = start;
+                                    }
+                                    if (start <= week && week <= end) {
+                                        flag = true;
+                                        break;
+                                    } else {
+                                        if (n == t5.length - 1) {
                                             break;
-                                        } else {
-                                            if (n == t5.length - 1) {
-                                                break;
-                                            }
                                         }
                                     }
-                                } catch (Exception e) {
-
                                 }
-                                if (flag) {
-                                    nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", myImageList.get(Integer.parseInt(cursor.getString(8))));
-                                } else {
+                            } catch (Exception e) {
+                                APPAplication.showToast(course_info.get(m).get("课程名") + " 的周次有语法问题，请修改!", 1);
+                            }
+                            if (flag) {
+                                if (!TextUtils.isEmpty(course_info.get(m).get("教室").trim()))
+                                    nestedView.setTextViewText(single_index.get(j - 1),
+                                            course_info.get(m).get("课程名") + "@" + course_info.get(m).get("教室"));
+                                else
+                                    nestedView.setTextViewText(single_index.get(j - 1), course_info.get(m).get("课程名"));
+                                nestedView.setInt(single_index.get(j - 1), "setBackgroundResource",
+                                        myImageList.get(Integer.parseInt(course_info.get(m).get("颜色代码"))));
+//                                Intent intent = new Intent();
+//                                intent.setClass(context, KebiaoDialogActivity.class);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("课程名", course_info.get(m).get("课程名"));
+//                                bundle.putString("老师", course_info.get(m).get("老师"));
+//                                bundle.putString("教室", course_info.get(m).get("教室"));
+//                                intent.putExtras(bundle);
+//                                PendingIntent pi = PendingIntent.getActivity
+//                                        (context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                                nestedView.setOnClickPendingIntent(single_index.get(j - 1), pi);
+                                break;
+                            } else {
+                                if (m == course_info.size() - 1) {
                                     nestedView.setInt(single_index.get(j - 1), "setBackgroundResource", R.drawable.textview_border_hui);
                                     nestedView.setTextColor(single_index.get(j - 1), Color.rgb(167, 174, 174));
+                                    if (!TextUtils.isEmpty(course_info.get(0).get("教室").trim()))
+                                        nestedView.setTextViewText(single_index.get(j - 1),
+                                                course_info.get(0).get("课程名") + "@" + course_info.get(0).get("教室"));
+                                    else
+                                        nestedView.setTextViewText(single_index.get(j - 1), course_info.get(0).get("课程名"));
                                 }
-                                if (!TextUtils.isEmpty(cursor.getString(3).trim()))
-                                    nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1) + "@" + cursor.getString(3));
-                                else
-                                    nestedView.setTextViewText(single_index.get(j - 1), cursor.getString(1));
-                            } while (cursor.moveToNext());
+                            }
                         }
                     } else {
                         nestedView.setTextViewText(single_index.get(j - 1), "");
                     }
-                } catch (Exception e) {
                 } finally {
                     if (cursor != null)
                         cursor.close();

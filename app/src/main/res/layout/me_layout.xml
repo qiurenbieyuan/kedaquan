@@ -85,12 +85,12 @@
                         <View style="@style/bg_line" />
 
                         <LinearLayout
-                            android:id="@+id/me_layout_myinfo"
+                            android:id="@+id/me_layout_info"
                             style="@style/bottom_layout">
 
                             <TextView
                                 style="@style/usertext"
-                                android:text="个人资料" />
+                                android:text="通知中心" />
 
                             <ImageView style="@style/img_arrow" />
                         </LinearLayout>

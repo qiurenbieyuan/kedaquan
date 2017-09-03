@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bbsreply_menu_me"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="我"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/bbsreply_menu_show"
+        android:orderInCategory="100"
+        android:title="在浏览器中打开"
+        app:showAsAction="never" />
+</menu>

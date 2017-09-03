@@ -120,6 +120,7 @@ public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuIt
                 final EditText c_zc = (EditText) view.findViewById(R.id.kebiao_detail_zc_c);
                 final EditText c_jc = (EditText) view.findViewById(R.id.kebiao_detail_jc_c);
                 Dialog dialog = new AlertDialog.Builder(this).setView(view).setTitle("修改课程")
+                        .setCancelable(false)
                         .setPositiveButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

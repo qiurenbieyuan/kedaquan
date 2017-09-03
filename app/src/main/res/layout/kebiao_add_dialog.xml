@@ -1,67 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="编号"
-        android:textSize="13dp" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <EditText
-        android:id="@+id/kebiao_detail_kcdm_c2"
+        <EditText
+            android:id="@+id/kebiao_detail_kcdm_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="编号"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/kebiao_detail_kcm_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="课程名"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/kebiao_detail_ls_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="老师"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/kebiao_detail_sj_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="时间(例如:2 3)表示周二第3大节"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/kebiao_detail_zc_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="周次(例如:1,4-8)表示第1,4,5,6,7,8周"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/kebiao_detail_js_c2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="教室"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="课程名"
-        android:textSize="13dp" />
+        <Button
+            android:id="@+id/kebiao_detail_bt1"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="添加"
+            android:textSize="15sp" />
 
-    <EditText
-        android:id="@+id/kebiao_detail_kcm_c2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="老师"
-        android:textSize="13dp" />
-
-    <EditText
-        android:id="@+id/kebiao_detail_ls_c2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="周次(请仿照修改)"
-        android:textSize="13dp" />
-
-    <EditText
-        android:id="@+id/kebiao_detail_zc_c2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="教室"
-        android:textSize="13dp" />
-
-    <EditText
-        android:id="@+id/kebiao_detail_js_c2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp" />
+        <Button
+            android:id="@+id/kebiao_detail_bt2"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="取消"
+            android:textSize="15sp" />
+    </LinearLayout>
 </LinearLayout>

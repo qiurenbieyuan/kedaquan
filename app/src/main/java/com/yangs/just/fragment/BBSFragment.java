@@ -34,6 +34,7 @@ import com.yangs.just.activity.Browser;
 import com.yangs.just.bbs.BBS;
 import com.yangs.just.bbs.BBSAdapter;
 import com.yangs.just.bbs.BBSDetailActivity;
+import com.yangs.just.bbs.BBSReplyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class BBSFragment extends LazyLoadFragment implements OnItemClickListener
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(this);
         url = "http://www.myangs.com:81/forum.php?mod=forumdisplay&fid=46&mobile=1";
-        list = new ArrayList<BBS>();
+        list = new ArrayList<>();
         lRecyclerView = (LRecyclerView) mLay.findViewById(R.id.articlefragment_lr);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bbsAdapter = new BBSAdapter(list, getActivity());
@@ -298,11 +299,11 @@ public class BBSFragment extends LazyLoadFragment implements OnItemClickListener
         switch (item.getItemId()) {
             case R.id.bbs_menu_msg:
                 if (APPAplication.bbs_login_status) {
-                    Intent intent = new Intent(getActivity(), Browser.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url", "http://www.myangs.com:81/" + APPAplication.bbsSource.user_url);
-                    bundle.putString("cookie", APPAplication.bbsSource.cookie);
-                    intent.putExtras(bundle);
+                    Intent intent = new Intent(getActivity(), BBSReplyActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("url", "http://www.myangs.com:81/" + APPAplication.bbsSource.user_url);
+//                    bundle.putString("cookie", APPAplication.bbsSource.cookie);
+//                    intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
                     APPAplication.showToast("请先登录", 0);

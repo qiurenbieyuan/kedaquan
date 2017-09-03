@@ -150,6 +150,11 @@ public class getKebiaoSource {
                                     cursor.moveToNext();
                                     color = cursor.getInt(8);
                                 } catch (Exception ee) {
+                                    if (color_no_again_control == 13) {
+                                        color_no_again_control = 0;     //只支持14种颜色
+                                        APPAplication.showToast("客官你的课程数量超过14了,目前还没有足够的颜色区分" +
+                                                ",将使用重复的颜色!", 1);
+                                    }
                                     color = color_no_again_control++;
                                 } finally {
                                     if (cursor != null)

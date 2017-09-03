@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,10 +16,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -30,6 +33,8 @@ import com.yangs.just.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by yangs on 2017/3/1.
@@ -95,35 +100,41 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                APPAplication.showDialog(view.getContext(), message);
+                new AlertDialog.Builder(view.getContext()).setTitle("提示").setMessage(message)
+                        .setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        result.confirm();
+                    }
+                }).create().show();
                 return true;
             }
 
             @Override
             public boolean onJsConfirm(WebView view, String url, String message,
                                        final JsResult result) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage(message)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm();
-                            }
-                        })
-                        .setNeutralButton("取消", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.cancel();
-                            }
-                        });
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                new AlertDialog.Builder(view.getContext()).setCancelable(false)
+                        .setMessage(message).setTitle("提示").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onCancel(DialogInterface dialog) {
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         result.cancel();
                     }
-                });
-
+                }).create().show();
                 return true;
             }
 
+        });
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
         });
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -135,7 +146,7 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         webSettings.setAllowFileAccess(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 5);
-        webSettings.setUserAgentString("myangs");
+        webSettings.setUserAgentString("myangs Mozilla/5.0 (Linux; Android; kedaquan) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
         if (cookie != null) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 CookieSyncManager.createInstance(this);
@@ -146,29 +157,6 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
             }
         }
         webview.setInitialScale(100);
-        webview.setWebViewClient(new WebViewClient() {
-
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                if (url.startsWith("http") || url.startsWith("https") || url.startsWith("about")) {
-                    return super.shouldInterceptRequest(view, url);
-                } else if (url.startsWith("tel") || url.startsWith("mqq") || url.startsWith("tencent")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
-                    return super.shouldInterceptRequest(view, view.getUrl());
-                } else {
-                    return super.shouldInterceptRequest(view, view.getUrl());
-                }
-            }
-
-        });
         webview.addJavascriptInterface(new JavaJS(this), "JavaJS");
         webview.loadUrl(url);
     }
@@ -192,6 +180,13 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webview.destroy();
+        webview = null;
     }
 
     @Override
@@ -220,7 +215,7 @@ class JavaJS {
         this.activity = activity;
     }
 
-    @JavascriptInterface
+    @JavascriptInterface            //5.0以上必须加注解才允许被执行
     public void fun(final String user, final String pwd) {
         Intent data = new Intent();
         Bundle bundle = new Bundle();
@@ -232,6 +227,7 @@ class JavaJS {
         activity.finish();
     }
 
+    @JavascriptInterface
     public String postPwd() {
         return APPAplication.save.getString("pwd", "");
     }

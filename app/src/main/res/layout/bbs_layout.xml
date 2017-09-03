@@ -27,7 +27,7 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="校园"
+                android:text="论坛"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>

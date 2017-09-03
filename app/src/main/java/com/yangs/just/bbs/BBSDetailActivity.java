@@ -57,6 +57,7 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
     private BBSDetailAdapter bbsDetailAdapter;
     private String url;
     private String name;
+    private Boolean isReply;
     private List<BBSDetail> list;
     private Handler handler;
     private LinearLayout lay_bottom;
@@ -82,6 +83,7 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("url");
         name = bundle.getString("name");
+        isReply = bundle.getBoolean("isReply");
         list = new ArrayList<>();
         toolbar.setTitle("帖子正文");
         setSupportActionBar(toolbar);
@@ -264,6 +266,7 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
             public void run() {
                 list = APPAplication.bbsSource.getDetailList(url + "&page=" + pageCurrent);
                 pageTotal = APPAplication.bbsSource.getPage();
+                pageCurrent = APPAplication.bbsSource.getCurrentPage();
                 try {
                     if (list.size() > 0)
                         handler.sendEmptyMessage(1);
@@ -291,7 +294,7 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
                         if (list.size() > 0) {
                             handler.sendEmptyMessage(5);
                         } else {
-                            handler.sendEmptyMessage(6);
+                            handler.sendEmptyMessage(2);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -388,6 +391,9 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
                         } catch (Exception e) {
                         }
                         if (i > 0 && i <= pageTotal) {
+                            if (url.contains("&page=")) {
+                                url = url.replaceAll("&page=\\d+", "").replaceAll("#pid\\d+", "");
+                            }
                             dialog.dismiss();
                             pageCurrent = i;
                             bbsDetailAdapter.clear();

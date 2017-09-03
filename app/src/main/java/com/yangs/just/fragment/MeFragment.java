@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,38 +14,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.yancy.gallerypick.config.GalleryConfig;
-import com.yancy.gallerypick.config.GalleryPick;
-import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.yangs.just.R;
 import com.yangs.just.activity.APPAplication;
 import com.yangs.just.activity.BBSLoginActivity;
 import com.yangs.just.activity.Browser;
-import com.yangs.just.activity.TitleBuilder;
+import com.yangs.just.activity.NoticeActivity;
 import com.yangs.just.activity.meAbout;
 import com.yangs.just.bbs.BBSSource;
-import com.yangs.just.utils.Advice;
 import com.yangs.just.utils.AsyncTaskUtil;
-import com.yangs.just.utils.FrescoImageLoader;
 import com.yangs.just.utils.VersionControl;
 
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.List;
 
 /**
  * Created by yangs on 2017/5/6.
@@ -61,7 +47,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     public TextView tv_bbs;
     private LinearLayout me_layout_login;
     private LinearLayout me_layout_bbs;
-    private LinearLayout me_layout_myinfo;
+    private LinearLayout me_layout_info;
     private LinearLayout me_layout_advice;
     private LinearLayout me_layout_update;
     private LinearLayout me_layout_about;
@@ -83,13 +69,13 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         tv_bbs = (TextView) mLayMe.findViewById(R.id.me_tv_bbs);
         me_layout_login = (LinearLayout) mLayMe.findViewById(R.id.me_layout_login);
         me_layout_bbs = (LinearLayout) mLayMe.findViewById(R.id.me_layout_bbs);
-        me_layout_myinfo = (LinearLayout) mLayMe.findViewById(R.id.me_layout_myinfo);
+        me_layout_info = (LinearLayout) mLayMe.findViewById(R.id.me_layout_info);
         me_layout_advice = (LinearLayout) mLayMe.findViewById(R.id.me_layout_advice);
         me_layout_update = (LinearLayout) mLayMe.findViewById(R.id.me_layout_update);
         me_layout_about = (LinearLayout) mLayMe.findViewById(R.id.me_layout_about);
         me_layout_login.setOnClickListener(this);
         me_layout_bbs.setOnClickListener(this);
-        me_layout_myinfo.setOnClickListener(this);
+        me_layout_info.setOnClickListener(this);
         me_layout_advice.setOnClickListener(this);
         me_layout_update.setOnClickListener(this);
         me_layout_about.setOnClickListener(this);
@@ -144,37 +130,31 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                     }).create().show();
                 }
                 break;
-            case R.id.me_layout_myinfo:
-                if (TextUtils.isEmpty(APPAplication.save.getString("xh", ""))) {
-                    Toast.makeText(activity, "请先登录!", Toast.LENGTH_SHORT).show();
-                } else {
-                    new AlertDialog.Builder(activity).setTitle("个人资料")
-                            .setMessage("姓名 : " + save.getString("name", "未登陆") + "\n\n" + "学号 : "
-                                    + save.getString("xh", "0") + "\n\n" + "当前学期 : "
-                                    + save.getString("term", "0") + "\n\n" + "版本号 : "
-                                    + APPAplication.version + "\n")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
-                }
+            case R.id.me_layout_info:
+                startActivity(new Intent(getActivity(),NoticeActivity.class));
                 break;
             case R.id.me_layout_advice:
+                PackageManager packageManager = getActivity().getPackageManager();
+                try {
+                    packageManager.getPackageInfo("com.tencent.mobileqq", 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    APPAplication.showToast("安装手机QQ后才能反馈哦", 0);
+                    return;
+                }
                 View view = getActivity().getLayoutInflater().inflate(R.layout.me_advice_dialog, null);
-                final EditText advice_et_ad = (EditText) view.findViewById(R.id.me_advice_dialog_et_ad);
-                final EditText advice_et_qq = (EditText) view.findViewById(R.id.me_advice_dialog_et_qq);
-                Button advice_bt_jq = (Button) view.findViewById(R.id.me_advice_dialog_bt_jq);
-                Button advice_bt_sub = (Button) view.findViewById(R.id.me_advice_dialog_bt_sub);
-                Button advice_bt_cancel = (Button) view.findViewById(R.id.me_advice_dialog_bt_cancel);
-                advice_bt_cancel.setOnClickListener(new View.OnClickListener() {
+                final Button advice_bt_1 = (Button) view.findViewById(R.id.me_advice_dialog_bt_1);
+                final Button advice_et_2 = (Button) view.findViewById(R.id.me_advice_dialog_bt_2);
+                advice_bt_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         advice_dialog.dismiss();
+                        String url = "mqqwpa://im/chat?chat_type=wpa&uin=1125280130";
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 });
-                advice_bt_jq.setOnClickListener(new View.OnClickListener() {
+                advice_et_2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         advice_dialog.dismiss();
@@ -184,44 +164,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                         startActivity(intent);
                     }
                 });
-                advice_bt_sub.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final String et_ad = advice_et_ad.getText().toString().trim();
-                        final String et_qq = advice_et_qq.getText().toString().trim();
-                        if (et_ad.equals("")) {
-                            advice_et_ad.setError("请输入建议");
-                            return;
-                        } else {
-                            advice_et_ad.setError(null);
-                        }
-                        if (et_qq.equals("")) {
-                            advice_et_qq.setError("请输入联系方式");
-                            return;
-                        } else {
-                            advice_et_qq.setError(null);
-                        }
-                        if (progressDialog == null)
-                            progressDialog = new ProgressDialog(getContext());
-                        progressDialog.setMessage("正在火速提交...");
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setCancelable(false);
-                        if (!progressDialog.isShowing())
-                            progressDialog.show();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Advice advice = new Advice();
-                                if (advice.post(et_ad, et_qq))
-                                    handler.sendEmptyMessage(1);
-                                else
-                                    handler.sendEmptyMessage(2);
-                            }
-                        }).start();
-                    }
-                });
-                advice_dialog = new AlertDialog.Builder(getContext()).setView(view).setCancelable(false)
-                        .setTitle("反馈").create();
+                advice_dialog = new AlertDialog.Builder(getContext()).setView(view).setCancelable(true)
+                        .setTitle("快速反馈").create();
                 advice_dialog.show();
                 break;
             case R.id.me_layout_update:

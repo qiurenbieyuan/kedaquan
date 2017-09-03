@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -102,7 +104,6 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
         inflater.inflate(R.menu.kebiao_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -125,8 +126,8 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
         toolbar_time.setText("第" + APPAplication.week + "周 ▾");
         toolbar_time.setOnClickListener(this);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.kebiao_menu);
         toolbar.setOnMenuItemClickListener(this);
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(activity, R.drawable.ic_add_black_24dp));
         week = APPAplication.week;
         kebiao_show_ct = APPAplication.kebiao_show_ct;
         if (new File(APPAplication.getPath() + "/background.jpg").exists()) {
@@ -208,27 +209,39 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
         kebiao_tv_friday.setText("周五\n" + check_m(last, firstDayOfWeek + 4));
         kebiao_tv_Staday.setText("周六\n" + check_m(last, firstDayOfWeek + 5));
         kebiao_tv_Sunday.setText("周日\n" + check_m(last, firstDayOfWeek + 6));
-        switch ((d.getDate() - firstDayOfWeek + 1)) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        switch (w) {
+            case 0:
+                kebiao_tv_Sunday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_Sunday.getBackground().setAlpha(150);
+                break;
             case 1:
                 kebiao_tv_monday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_monday.getBackground().setAlpha(150);
                 break;
             case 2:
                 kebiao_tv_tuesday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_tuesday.getBackground().setAlpha(150);
                 break;
             case 3:
                 kebiao_tv_wednesday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_wednesday.getBackground().setAlpha(150);
                 break;
             case 4:
                 kebiao_tv_fourthday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_fourthday.getBackground().setAlpha(150);
                 break;
             case 5:
                 kebiao_tv_friday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_friday.getBackground().setAlpha(150);
                 break;
             case 6:
                 kebiao_tv_Staday.setBackgroundColor(getResources().getColor(R.color.white));
-                break;
-            case 7:
-                kebiao_tv_Sunday.setBackgroundColor(getResources().getColor(R.color.white));
+                kebiao_tv_Staday.getBackground().setAlpha(150);
                 break;
         }
     }
@@ -298,9 +311,9 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                             params.setMargins(0, (j - 1 - counts[i - 1]) * heightPixels / 6 + (j - 1 - counts[i - 1] + 1) * 6, 0, 0); //left,top,right, bottom
                             textView.setLayoutParams(params);
                             linearLayout[i - 1].addView(textView);
-                            if (course_info.size() == 1) {
+                            for (int m = 0; m < course_info.size(); m++) {
                                 try {
-                                    String[] t5 = course_info.get(0).get("周次").replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
+                                    String[] t5 = course_info.get(m).get("周次").replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
                                     for (int n = 0; n < t5.length; n++) {
                                         String[] t6 = t5[n].split("-");
                                         int start, end;
@@ -320,72 +333,28 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                                         }
                                     }
                                 } catch (Exception e) {
-                                    APPAplication.showToast(course_info.get(0).get("课程名") + " 的周次有语法问题，请修改!", 1);
+                                    APPAplication.showToast(course_info.get(m).get("课程名") + " 的周次有语法问题，请修改!", 1);
                                 }
                                 if (flag) {
                                     textView.setTextColor(Color.WHITE);
-                                    if (course_info.get(0).get("教室").trim().isEmpty()) {
-                                        textView.setText(course_info.get(0).get("课程名"));
+                                    if (course_info.get(m).get("教室").trim().isEmpty()) {
+                                        textView.setText(course_info.get(m).get("课程名"));
                                     } else {
-                                        textView.setText(course_info.get(0).get("课程名") + "@" + course_info.get(0).get("教室"));
+                                        textView.setText(course_info.get(m).get("课程名") + "@" + course_info.get(m).get("教室"));
                                     }
-                                    textView.setBackgroundResource(myImageList.get(Integer.parseInt(course_info.get(0).get("颜色代码"))));
-                                    textView.getBackground().setAlpha(230);
+                                    textView.setBackgroundResource(myImageList.get(Integer.parseInt(course_info.get(m).get("颜色代码"))));
+                                    textView.getBackground().setAlpha(220);
+                                    break;
                                 } else {
-                                    if (kebiao_show_ct == 0) {
-                                        textView.setTextColor(Color.rgb(167, 174, 174));
-                                        textView.setBackgroundResource(R.drawable.textview_border_hui);
-                                        if (course_info.get(0).get("教室").trim().isEmpty())
-                                            textView.setText(course_info.get(0).get("课程名"));
-                                        else
-                                            textView.setText(course_info.get(0).get("课程名") + "@" + course_info.get(0).get("教室"));
-                                    }
-                                }
-                            } else {
-                                for (int m = 0; m < course_info.size(); m++) {
-                                    try {
-                                        String[] t5 = course_info.get(m).get("周次").replaceAll("\\(单周\\)|\\(周\\)|\\(双周\\)", "").split(",");
-                                        for (int n = 0; n < t5.length; n++) {
-                                            String[] t6 = t5[n].split("-");
-                                            int start, end;
-                                            start = Integer.parseInt(t6[0]);
-                                            try {
-                                                end = Integer.parseInt(t6[1]);
-                                            } catch (Exception e) {
-                                                end = start;
-                                            }
-                                            if (start <= week && week <= end) {
-                                                flag = true;
-                                                break;
-                                            } else {
-                                                if (n == t5.length - 1) {
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        APPAplication.showToast(course_info.get(m).get("课程名") + " 的周次有语法问题，请修改!", 1);
-                                    }
-                                    if (flag) {
-                                        textView.setTextColor(Color.WHITE);
-                                        if (course_info.get(m).get("教室").trim().isEmpty()) {
-                                            textView.setText(course_info.get(m).get("课程名"));
-                                        } else {
-                                            textView.setText(course_info.get(m).get("课程名") + "@" + course_info.get(m).get("教室"));
-                                        }
-                                        textView.setBackgroundResource(myImageList.get(Integer.parseInt(course_info.get(m).get("颜色代码"))));
-                                        textView.getBackground().setAlpha(230);
-                                        break;
-                                    } else {
-                                        if (m == course_info.size() - 1) {
-                                            if (kebiao_show_ct == 0) {
-                                                textView.setTextColor(Color.rgb(167, 174, 174));
-                                                textView.setBackgroundResource(R.drawable.textview_border_hui);
-                                                if (course_info.get(m).get("教室").trim().isEmpty())
-                                                    textView.setText(course_info.get(m).get("课程名"));
-                                                else
-                                                    textView.setText(course_info.get(m).get("课程名") + "@" + course_info.get(m).get("教室"));
-                                            }
+                                    if (m == course_info.size() - 1) {
+                                        if (kebiao_show_ct == 0) {
+                                            textView.setTextColor(Color.rgb(167, 174, 174));
+                                            textView.setBackgroundResource(R.drawable.textview_border_hui);
+                                            textView.getBackground().setAlpha(200);
+                                            if (course_info.get(0).get("教室").trim().isEmpty())
+                                                textView.setText(course_info.get(0).get("课程名"));
+                                            else
+                                                textView.setText(course_info.get(0).get("课程名") + "@" + course_info.get(0).get("教室"));
                                         }
                                     }
                                 }
@@ -433,72 +402,6 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
 
                                 }
                             });
-                        } else {
-                            final TextView textView = new TextView(linearLayout[i - 1].getContext());
-                            textView.setTextSize(12);
-                            textView.setPadding(5, 15, 5, 15);
-                            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, heightPixels / 6);
-                            params.setMargins(0, (j - 1 - counts[i - 1]) * heightPixels / 6 + (j - 1 - counts[i - 1] + 1) * 6, 0, 0); //left,top,right, bottom
-                            textView.setLayoutParams(params);
-                            linearLayout[i - 1].addView(textView);
-                            final int finalI = i;
-                            final int finalJ = j;
-                            textView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Toast.makeText(MainActivity.this, "再按一次添加课程", Toast.LENGTH_SHORT).show();
-                                    LayoutInflater layoutInflater = LayoutInflater.from(activity);
-                                    View view = layoutInflater.inflate(R.layout.kebiao_add_dialog, null);
-                                    final EditText c_kcm = (EditText) view.findViewById(R.id.kebiao_detail_kcm_c2);
-                                    final EditText c_kcdm = (EditText) view.findViewById(R.id.kebiao_detail_kcdm_c2);
-                                    final EditText c_ls = (EditText) view.findViewById(R.id.kebiao_detail_ls_c2);
-                                    final EditText c_js = (EditText) view.findViewById(R.id.kebiao_detail_js_c2);
-                                    final EditText c_zc = (EditText) view.findViewById(R.id.kebiao_detail_zc_c2);
-                                    Dialog dialog = new AlertDialog.Builder(activity).setView(view).setTitle("添加课程")
-                                            .setCancelable(false)
-                                            .setPositiveButton("取消", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            }).setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    if (TextUtils.isEmpty(c_kcm.getText().toString())) {
-                                                        APPAplication.showToast("添加失败,课程名为必填项!", 1);
-                                                        dialog.dismiss();
-                                                    } else if (TextUtils.isEmpty(c_zc.getText().toString())) {
-                                                        APPAplication.showToast("添加失败,周次为必填项!", 1);
-                                                        dialog.dismiss();
-                                                    } else {
-                                                        ContentValues cv = new ContentValues();
-                                                        cv.put("课程代码", c_kcdm.getText().toString());
-                                                        cv.put("课程名", c_kcm.getText().toString());
-                                                        cv.put("教室", c_js.getText().toString());
-                                                        cv.put("老师", c_ls.getText().toString());
-                                                        cv.put("周次", c_zc.getText().toString());
-                                                        cv.put("星期", finalI);
-                                                        cv.put("节次", finalJ);
-                                                        String sql = "select * from course where 课程名='" + cv.get("课程名") + "';";
-                                                        Cursor cursor = APPAplication.db.rawQuery(sql, null);
-                                                        try {
-                                                            cursor.moveToNext();
-                                                            cv.put("颜色代码", cursor.getInt(8) + "");
-                                                        } catch (Exception ee) {
-                                                            cv.put("颜色代码", "0");
-                                                        }
-                                                        APPAplication.db.insert("course", null, cv);
-                                                        dialog.dismiss();
-                                                        initKebiao();
-                                                        APPAplication.sendRefreshKebiao(activity);
-                                                        APPAplication.showToast("添加成功!", 0);
-                                                    }
-                                                }
-                                            }).create();
-                                    dialog.show();
-                                }
-                            });
                         }
                     } catch (Exception e) {
                         APPAplication.showDialog(getContext(), e.toString());
@@ -517,6 +420,91 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.kebiao_menu_add:
+                View view = LayoutInflater.from(activity).inflate(R.layout.kebiao_add_dialog, null);
+                final EditText c_kcm = (EditText) view.findViewById(R.id.kebiao_detail_kcm_c2);
+                final EditText c_kcdm = (EditText) view.findViewById(R.id.kebiao_detail_kcdm_c2);
+                final EditText c_ls = (EditText) view.findViewById(R.id.kebiao_detail_ls_c2);
+                final EditText c_js = (EditText) view.findViewById(R.id.kebiao_detail_js_c2);
+                final EditText c_sj = (EditText) view.findViewById(R.id.kebiao_detail_sj_c2);
+                final EditText c_zc = (EditText) view.findViewById(R.id.kebiao_detail_zc_c2);
+                Button c_bt1 = (Button) view.findViewById(R.id.kebiao_detail_bt1);
+                Button c_bt2 = (Button) view.findViewById(R.id.kebiao_detail_bt2);
+                final Dialog dialog = new AlertDialog.Builder(activity).setView(view).setTitle("添加课程")
+                        .setCancelable(false).create();
+                c_bt2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+                c_bt1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (c_kcm.getText().toString().equals("")) {
+                            c_kcm.setError("课程名不能为空");
+                            return;
+                        } else {
+                            c_kcm.setError(null);
+                        }
+                        if (c_sj.getText().toString().equals("")) {
+                            c_sj.setError("时间不能为空");
+                            return;
+                        } else {
+                            c_sj.setError(null);
+                        }
+                        if (c_zc.getText().toString().equals("")) {
+                            c_zc.setError("周次不能为空");
+                            return;
+                        } else {
+                            c_zc.setError(null);
+                        }
+                        Cursor cursor = null;
+                        try {
+                            ContentValues cv = new ContentValues();
+                            cv.put("课程代码", c_kcdm.getText().toString());
+                            cv.put("课程名", c_kcm.getText().toString());
+                            cv.put("教室", c_js.getText().toString());
+                            cv.put("老师", c_ls.getText().toString());
+                            cv.put("周次", c_zc.getText().toString());
+                            cv.put("星期", c_sj.getText().toString().split("\\s+")[0]);
+                            cv.put("节次", c_sj.getText().toString().split("\\s+")[1]);
+                            String sql = "select * from course where 课程名='" + cv.get("课程名") + "';";
+                            cursor = APPAplication.db.rawQuery(sql, null);
+                            if (cursor.getCount() > 0) {
+                                cursor.moveToFirst();
+                                cv.put("颜色代码", cursor.getInt(8) + "");
+                            } else {
+                                sql = "select 颜色代码 from course order by 颜色代码 desc";
+                                cursor = APPAplication.db.rawQuery(sql, null);
+                                cursor.moveToFirst();
+                                int co = Integer.parseInt(cursor.getString(cursor.getColumnIndex("颜色代码")));
+                                if (co == 13) {
+                                    APPAplication.showToast("客官你的课程数量超过14了,目前还没有足够的颜色区分" +
+                                            ",将使用重复的颜色!", 1);
+                                    co = 0;
+                                } else {
+                                    co++;
+                                }
+                                cv.put("颜色代码", co);
+                            }
+                            APPAplication.db.insert("course", null, cv);
+                            if (dialog != null)
+                                dialog.dismiss();
+                            initKebiao();
+                            APPAplication.sendRefreshKebiao(activity);
+                            APPAplication.showToast("添加成功!", 0);
+                        } catch (Exception ee) {
+                            APPAplication.showToast("输入的课程信息格式不对,请检查!", 1);
+                        } finally {
+                            if (cursor != null)
+                                cursor.close();
+                        }
+                    }
+                });
+                dialog.show();
+                break;
             case R.id.kebiao_menu_refresh:
                 if (TextUtils.isEmpty(APPAplication.save.getString("xh", ""))) {
                     APPAplication.showToast("请先绑定账号!", 0);
