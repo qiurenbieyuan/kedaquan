@@ -46,7 +46,7 @@ public class APPAplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        debug = false;
+        debug = true;
         bbs_login_status = false;
         bbs_login_status_check = false;
         context = getApplicationContext();

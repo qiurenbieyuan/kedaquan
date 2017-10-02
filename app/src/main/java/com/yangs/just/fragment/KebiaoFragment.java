@@ -41,11 +41,13 @@ import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.yangs.just.R;
 import com.yangs.just.activity.APPAplication;
 import com.yangs.just.activity.Kebiao_detail;
+import com.yangs.just.utils.DateUtil;
 import com.yangs.just.utils.FrescoImageLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -190,31 +192,35 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
     }
 
     private void initKebiaoHeader(Date d) {
-        Date date = getWeekStartDate(d);
-        firstDayOfWeek = date.getDate();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(d.getTime());
-        calendar.set(Calendar.YEAR, calendar.getTime().getYear());
-        calendar.set(Calendar.MONTH, calendar.getTime().getMonth());
-        if (date.getMonth() != calendar.getTime().getMonth()) {
-            calendar.add(Calendar.MONTH, -1);
-        }
-        int last = calendar.getActualMaximum(Calendar.DATE);
-        kebiao_tv_start.setText((date.getMonth() + 1) + "月");
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTimeInMillis(DateUtil.getFirstDayOfWeek(d).getTime());
+        int startMonth = cal2.get(Calendar.MONTH) + 1;
+        Date td = DateUtil.getFirstDayOfWeek(d);
+        kebiao_tv_start.setText(startMonth + "月");
         kebiao_tv_start.setTextColor(Color.rgb(27, 124, 220));
         kebiao_tv_start.setGravity(Gravity.CENTER);
-        kebiao_tv_monday.setText("周一\n" + check_m(last, firstDayOfWeek));
-        kebiao_tv_tuesday.setText("周二\n" + check_m(last, firstDayOfWeek + 1));
-        kebiao_tv_wednesday.setText("周三\n" + check_m(last, firstDayOfWeek + 2));
-        kebiao_tv_fourthday.setText("周四\n" + check_m(last, firstDayOfWeek + 3));
-        kebiao_tv_friday.setText("周五\n" + check_m(last, firstDayOfWeek + 4));
-        kebiao_tv_Staday.setText("周六\n" + check_m(last, firstDayOfWeek + 5));
-        kebiao_tv_Sunday.setText("周日\n" + check_m(last, firstDayOfWeek + 6));
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        if (w < 0)
-            w = 0;
+        kebiao_tv_monday.setText("周一\n" + DateUtil.geDayAfter(td, 0));
+        kebiao_tv_tuesday.setText("周二\n" + DateUtil.geDayAfter(td, 1));
+        kebiao_tv_wednesday.setText("周三\n" + DateUtil.geDayAfter(td, 2));
+        kebiao_tv_fourthday.setText("周四\n" + DateUtil.geDayAfter(td, 3));
+        kebiao_tv_friday.setText("周五\n" + DateUtil.geDayAfter(td, 4));
+        kebiao_tv_Staday.setText("周六\n" + DateUtil.geDayAfter(td, 5));
+        kebiao_tv_Sunday.setText("周日\n" + DateUtil.geDayAfter(td, 6));
+        kebiao_tv_Sunday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_Sunday.getBackground().setAlpha(150);
+        kebiao_tv_monday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_monday.getBackground().setAlpha(150);
+        kebiao_tv_tuesday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_tuesday.getBackground().setAlpha(150);
+        kebiao_tv_wednesday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_wednesday.getBackground().setAlpha(150);
+        kebiao_tv_friday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_friday.getBackground().setAlpha(150);
+        kebiao_tv_Staday.setBackgroundColor(getResources().getColor(R.color.kebiao_header_color));
+        kebiao_tv_Staday.getBackground().setAlpha(150);
+        if (DateUtil.geDayAfter(d, 0) != DateUtil.geDayAfter(new Date(System.currentTimeMillis()), 0))
+            return;
+        int w = DateUtil.getDayofWeek(d);
         switch (w) {
             case 0:
                 kebiao_tv_Sunday.setBackgroundColor(getResources().getColor(R.color.white));
@@ -245,30 +251,6 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                 kebiao_tv_Staday.getBackground().setAlpha(150);
                 break;
         }
-    }
-
-    public static Date getWeekStartDate(Date date) {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));// 设置时区~如果使用UTC时区，可以不用设置
-        calendar.setTimeInMillis(date.getTime());
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        int dayWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        if (1 == dayWeek) {
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-        }
-        calendar.setFirstDayOfWeek(Calendar.MONDAY); //设置周一为一周的第一天，否则默认是周日
-        int day = calendar.get(Calendar.DAY_OF_WEEK); //一周有多少天
-        calendar.add(Calendar.DATE, calendar.getFirstDayOfWeek() - day);
-        return calendar.getTime();
-    }
-
-    public int check_m(int check, int i) {
-        if (i > check)
-            return i - check;
-        else
-            return i;
     }
 
     public void initKebiao() {
@@ -673,20 +655,12 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
                         @Override
                         public void onItemClick(AdapterView<?> adapter, View view,
                                                 int positon, long id) {
-                            int tmp = (positon + 1) - APPAplication.save.getInt("week", 1);
+                            Date d = new Date(System.currentTimeMillis());
+                            initKebiaoHeader(DateUtil.getDateAfter(d, 7 * (positon + 1 - APPAplication.week)));
                             week = positon + 1;
-                            pop.dismiss();
-                            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                            java.util.Calendar cal = java.util.Calendar.getInstance();
-                            try {
-                                cal.setTime(sdf.parse(sdf.format(new Date())));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            cal.add(java.util.Calendar.DATE, tmp * 7);
-                            initKebiaoHeader(cal.getTime());
                             toolbar_time.setText("第" + week + "周 ▾");
                             initKebiao();
+                            pop.dismiss();
                         }
                     });
                 } else {

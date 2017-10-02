@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
@@ -111,29 +112,30 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
                 return true;
             }
 
-            @Override
-            public boolean onJsConfirm(WebView view, String url, String message,
-                                       final JsResult result) {
-                new AlertDialog.Builder(view.getContext()).setCancelable(false)
-                        .setMessage(message).setTitle("提示").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        result.confirm();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        result.cancel();
-                    }
-                }).create().show();
-                return true;
-            }
-
         });
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.proceed();
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                if (url.startsWith("http") || url.startsWith("https") || url.startsWith("about")) {
+                    return super.shouldInterceptRequest(view, url);
+                } else if (url.startsWith("tel") || url.startsWith("mqq") || url.startsWith("tencent")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return super.shouldInterceptRequest(view, view.getUrl());
+                } else {
+                    return super.shouldInterceptRequest(view, view.getUrl());
+                }
             }
         });
         WebSettings webSettings = webview.getSettings();
@@ -144,7 +146,7 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
-        webSettings.setBuiltInZoomControls(true);
+        //webSettings.setBuiltInZoomControls(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 5);
         webSettings.setUserAgentString("myangs Mozilla/5.0 (Linux; Android; kedaquan) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
         if (cookie != null) {
@@ -180,13 +182,6 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        webview.destroy();
-        webview = null;
     }
 
     @Override

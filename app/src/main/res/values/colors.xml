@@ -19,6 +19,7 @@
     <color name="color_00">#8A000000</color>
     <color name="text_clo">#333</color>
     <color name="white">#ffffff</color>
+    <color name="kebiao_header_color">#33FFFFFF</color>
     <color name="blue">#419de4</color>
     <color name="colorDisableHintIcon">#71000000</color>
     <color name="gallery_blue">#4758b3</color>
