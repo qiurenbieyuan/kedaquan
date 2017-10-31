@@ -26,6 +26,7 @@ import com.yangs.just.activity.APPAplication;
 import com.yangs.just.activity.BBSLoginActivity;
 import com.yangs.just.activity.Browser;
 import com.yangs.just.activity.NoticeActivity;
+import com.yangs.just.activity.VpnActivity;
 import com.yangs.just.activity.meAbout;
 import com.yangs.just.bbs.BBSSource;
 import com.yangs.just.utils.AsyncTaskUtil;
@@ -98,11 +99,26 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.me_layout_login:
-                Bundle bundle = new Bundle();
-                bundle.putString("url", "http://www.onewanqian.cn/-2/");
-                Intent intent = new Intent(activity, Browser.class);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 1);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("选择登录方式");
+                String[] type = {"外网导入", "内网导入(需要登录校内VPN)"};
+                builder.setItems(type, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", "http://www.onewanqian.cn/-2/");
+                            Intent intent = new Intent(activity, Browser.class);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent, 1);
+                        } else if (which == 1) {
+                            Intent intent = new Intent(activity, VpnActivity.class);
+                            startActivityForResult(intent, 1);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
                 break;
             case R.id.me_layout_bbs:
                 if (APPAplication.save.getString("bbs_cookie", "").equals("")) {
@@ -131,7 +147,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.me_layout_info:
-                startActivity(new Intent(getActivity(),NoticeActivity.class));
+                startActivity(new Intent(getActivity(), NoticeActivity.class));
                 break;
             case R.id.me_layout_advice:
                 PackageManager packageManager = getActivity().getPackageManager();

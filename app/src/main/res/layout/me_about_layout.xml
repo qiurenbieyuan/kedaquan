@@ -22,7 +22,7 @@
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_app" />
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/me_about_tv_version"

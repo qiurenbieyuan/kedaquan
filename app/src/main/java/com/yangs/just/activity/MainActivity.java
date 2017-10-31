@@ -264,6 +264,19 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 if (bbsFragment.lRecyclerView != null)
                     bbsFragment.lRecyclerView.refresh();
+                break;
+            case 4:
+                APPAplication.login_stat = 1;
+                APPAplication.save.edit().putInt("week", APPAplication.week).putInt("login_stat", 1).apply();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        VersionControl versionControl = new VersionControl();
+                        versionControl.upload(APPAplication.save.getString("name", "") + " " + APPAplication.save.getString("xh", ""), "");
+                    }
+                }).start();
+                handler.sendEmptyMessage(8);
+                break;
             default:
                 break;
         }

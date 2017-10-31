@@ -1,7 +1,6 @@
 package com.yangs.just.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,18 +8,19 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -28,14 +28,12 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.yangs.just.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import com.yangs.just.score.VpnSource;
 
 /**
  * Created by yangs on 2017/3/1.
@@ -60,10 +58,11 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("url");
         cookie = bundle.getString("cookie");
-        setContentView(R.layout.findweb_layout);
+        setContentView(R.layout.browser_layout);
         toolbar = (Toolbar) findViewById(R.id.browser_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arraw_back_white);
         toolbar.setTitle("");
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +71,8 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
             }
         });
         toolbar.setOnMenuItemClickListener(this);
-        bar = (ProgressBar) this.findViewById(R.id.findweb_myProgressBar);
-        webview = (WebView) this.findViewById(R.id.tencet_webview_findweb);
+        bar = (ProgressBar) findViewById(R.id.findweb_myProgressBar);
+        webview = (WebView) findViewById(R.id.browser_webview);
         webview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -83,12 +82,14 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                bar.getProgressDrawable().setColorFilter(Color.rgb(51, 122, 183),
-                        android.graphics.PorterDuff.Mode.SRC_IN);
                 if (newProgress == 100) {
-                    bar.setVisibility(View.GONE);
-                    if (view.getUrl().contains("http://202.195.195.198")) {
-                        view.loadUrl("javascript:{var id=document.getElementById('iframe2');id.style.height='388px';id.style.height=(id.contentWindow.document.body.scrollHeight+12).toString()+'px';console.log('已优化');}");
+                    if (bar != null)
+                        bar.setVisibility(View.GONE);
+                    if (view != null & view.getUrl().contains("http://202.195.195.198")) {
+                        view.loadUrl("javascript:{var id=document.getElementById('iframe2');" +
+                                "id.style.height='388px';" +
+                                "id.style.height=(id.contentWindow.document.body.scrollHeight+12)" +
+                                ".toString()+'px';}");
                     }
                 } else {
                     if (View.GONE == bar.getVisibility()) {
@@ -101,17 +102,68 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                new AlertDialog.Builder(view.getContext()).setTitle("提示").setMessage(message)
-                        .setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder b = new AlertDialog.Builder(Browser.this
+                        , R.style.AlertDialogCustom);
+                b.setTitle("提示");
+                b.setMessage(message);
+                b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
                         result.confirm();
                     }
-                }).create().show();
+                });
+                b.setCancelable(false);
+                b.create().show();
                 return true;
             }
 
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+                AlertDialog.Builder b = new AlertDialog.Builder(Browser.this
+                        , R.style.AlertDialogCustom);
+                b.setTitle("确定");
+                b.setMessage(message);
+                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                    }
+                });
+                b.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                    }
+                });
+                b.create().show();
+                return true;
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue,
+                                      final JsPromptResult result) {
+                final View v = View.inflate(view.getContext(), R.layout.browser_prompt_dialog, null);
+                AlertDialog.Builder b = new AlertDialog.Builder(Browser.this
+                        , R.style.AlertDialogCustom);
+                b.setTitle("提示");
+                b.setView(v);
+                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String value = ((EditText) v.findViewById(R.id.browser_prompt_dialog_et))
+                                .getText().toString();
+                        result.confirm(value);
+                    }
+                });
+                b.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                    }
+                });
+                b.create().show();
+                return true;
+            }
         });
         webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -146,7 +198,7 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
-        //webSettings.setBuiltInZoomControls(true);
+        webSettings.setBuiltInZoomControls(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 5);
         webSettings.setUserAgentString("myangs Mozilla/5.0 (Linux; Android; kedaquan) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
         if (cookie != null) {
@@ -161,6 +213,23 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         webview.setInitialScale(100);
         webview.addJavascriptInterface(new JavaJS(this), "JavaJS");
         webview.loadUrl(url);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webview.removeAllViews();
+        webview.setVisibility(View.GONE);
+        webview.destroy();
+        if (url.contains("vpn.just.edu.cn")) {
+            APPAplication.showToast("正在退出vpn系统", 0);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    VpnSource.exitVpn2();
+                }
+            }).start();
+        }
     }
 
     @Override

@@ -19,6 +19,10 @@
         <item name="colorControlNormal">#ffffff</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
     <style name="DialogTheme" parent="@android:style/Theme.Dialog">
 
         <item name="android:windowIsTranslucent">true</item>

@@ -3,7 +3,7 @@
     android:initialLayout="@layout/appwidget_layout"
     android:minHeight="330dp"
     android:minWidth="330dp"
-    android:previewImage="@drawable/ic_app"
+    android:previewImage="@drawable/ic_launcher"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen" >

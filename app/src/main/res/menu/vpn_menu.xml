@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/vpn_menu_use"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="使用说明"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/vpn_menu_talk"
+        android:title="反馈"
+        app:showAsAction="never" />
+</menu>

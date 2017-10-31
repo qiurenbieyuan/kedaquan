@@ -43,11 +43,11 @@ public class AsyncTaskRunnable implements Runnable {
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         //初始化下拉菜单的通知信息
         mNotification = new Notification();
-        mNotification.icon = R.drawable.ic_app;//设置下载进度的icon
+        mNotification.icon = R.drawable.ic_launcher;//设置下载进度的icon
         mNotification.tickerText = mContext.getResources().getString(R.string.app_name); //设置下载进度的title
 
         mRemoteViews = new RemoteViews(mContext.getPackageName(), R.layout.down_notification);//对于RemoteView的使用，不懂的需要查找google
-        mRemoteViews.setImageViewResource(R.id.id_download_icon, R.drawable.ic_app);
+        mRemoteViews.setImageViewResource(R.id.id_download_icon, R.drawable.ic_launcher);
     }
 
     @Override

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_app" />
+            android:src="@drawable/ic_launcher" />
 
         <LinearLayout
             android:layout_width="wrap_content"
