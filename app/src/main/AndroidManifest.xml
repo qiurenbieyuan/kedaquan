@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yangs.just">
+    package="com.yangs.kedaquan">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".activity.APPAplication"
+        android:name="com.yangs.kedaquan.activity.APPAplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="stateHidden|adjustResize">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.yangs.just.fileprovider"
+            android:authorities="com.yangs.kedaquan.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -28,40 +30,43 @@
         </provider>
 
         <activity
-            android:name=".Splash"
+            android:name="com.yangs.kedaquan.Splash"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.Kebiao_detail" />
-        <activity android:name=".activity.meAbout" />
-        <activity android:name=".activity.Browser" />
-        <activity android:name=".book.Book_Lend" />
-        <activity android:name=".book.Book_Find" />
-        <activity android:name=".coursepj.CoursePJ" />
-        <activity android:name=".score.ScoreActivity" />
-        <activity android:name=".bbs.BBSDetailActivity" />
-        <activity android:name=".activity.BBSLoginActivity" />
-        <activity android:name=".bbs.BBSReplyActivity" />
-        <activity android:name=".activity.NoticeActivity" />
-        <activity android:name=".activity.VpnActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.MainActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.Kebiao_detail" />
+        <activity android:name="com.yangs.kedaquan.activity.meAbout" />
         <activity
-            android:name=".activity.KebiaoDialogActivity"
+            android:name="com.yangs.kedaquan.activity.Browser"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name="com.yangs.kedaquan.book.Book_Lend" />
+        <activity android:name="com.yangs.kedaquan.book.Book_Find" />
+        <activity android:name="com.yangs.kedaquan.coursepj.CoursePJ" />
+        <activity android:name="com.yangs.kedaquan.score.ScoreActivity" />
+        <activity android:name="com.yangs.kedaquan.bbs.BBSDetailActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.BBSLoginActivity" />
+        <activity android:name="com.yangs.kedaquan.bbs.BBSReplyActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.NoticeActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.KebiaoGetActivity" />
+        <activity android:name="com.yangs.kedaquan.activity.VpnLoginActivity" />
+        <activity
+            android:name="com.yangs.kedaquan.activity.KebiaoDialogActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
 
-        <receiver android:name=".utils.CompleteReceiver">
+        <receiver android:name="com.yangs.kedaquan.utils.CompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".AppWidget">
+        <receiver android:name="com.yangs.kedaquan.AppWidget">
             <intent-filter>
                 <action android:name="Kedaquan_Widget_Update" />
             </intent-filter>

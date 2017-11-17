@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.yangs.just.activity.MainActivity">
+    tools:context="com.yangs.kedaquan.activity.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/kebiao_toolbar"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.yangs.just.activity.MainActivity">
+    tools:context="com.yangs.kedaquan.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -62,9 +62,24 @@
                             <TextView
                                 android:id="@+id/me_tv_login"
                                 style="@style/usertext"
-                                android:text="未登录" />
+                                android:text="导入课表" />
 
                             <ImageView style="@style/img_arrow" />
+                        </LinearLayout>
+
+                        <View style="@style/bg_line" />
+
+                        <LinearLayout
+                            android:id="@+id/me_layout_vpn"
+                            style="@style/mid_layout">
+
+                            <TextView
+                                android:id="@+id/me_tv_vpn"
+                                style="@style/usertext"
+                                android:text="绑定VPN" />
+
+                            <ImageView style="@style/img_arrow" />
+
                         </LinearLayout>
 
                         <View style="@style/bg_line" />

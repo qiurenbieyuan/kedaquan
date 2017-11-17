@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <com.yangs.just.CourseInfoGallery
+    <com.yangs.kedaquan.CourseInfoGallery
         android:id="@+id/course_info_gallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

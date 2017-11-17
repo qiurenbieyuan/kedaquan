@@ -14,6 +14,7 @@
     <color name="yellow">#fdc928</color>
     <color name="yellow_press">#e5b524</color>
     <color name="gray">#efeaea</color>
+    <color name="gray2">#e8e1e1</color>
     <!-- 描边颜色 -->
     <color name="border_clo">#ccc</color>
     <color name="color_00">#8A000000</color>

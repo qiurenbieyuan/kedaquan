@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.yangs.just.activity.MainActivity">
+    tools:context="com.yangs.kedaquan.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -48,7 +48,6 @@
         android:layout_marginBottom="38dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:src="@drawable/ic_add_black_24dp"
         fab:fab_colorNormal="@color/yellow"
         fab:fab_colorPressed="@color/yellow_press" />
 

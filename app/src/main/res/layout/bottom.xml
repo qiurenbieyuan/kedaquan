@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="bottom"
     android:orientation="horizontal"
     android:showDividers="beginning">
@@ -18,7 +19,7 @@
             android:id="@+id/id_tab_iv_kebiao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bottom_kebiao_iv" />
+            app:srcCompat="@drawable/bottom_kebiao_iv" />
 
         <TextView
             android:id="@+id/id_tab_tv_kebiao"
@@ -42,7 +43,7 @@
             android:id="@+id/id_tab_iv_school"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/buttom_iv_school2" />
+            app:srcCompat="@drawable/buttom_iv_school2" />
 
         <TextView
             android:id="@+id/id_tab_tv_school"
@@ -66,7 +67,7 @@
             android:id="@+id/id_tab_iv_find"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_button_iv_find" />
+            app:srcCompat="@drawable/ic_button_iv_find" />
 
         <TextView
             android:id="@+id/id_tab_tv_find"
@@ -90,7 +91,7 @@
             android:id="@+id/id_tab_iv_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/buttom_iv_me" />
+            app:srcCompat="@drawable/buttom_iv_me" />
 
         <TextView
             android:id="@+id/id_tab_tv_me"
