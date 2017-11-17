@@ -144,7 +144,8 @@ public class getKebiaoSource {
         APPAplication.db.execSQL("create table course(id INTEGER PRIMARY KEY AUTOINCREMENT,课程名 TEXT,课程代码 TEXT,教室 TEXT,老师 TEXT,星期 INTEGER,节次 INTEGER,周次 TEXT,颜色代码 INTEGER);");
         FormBody.Builder formBodyBuilder = new FormBody.Builder().add("xnxq01id", year);
         RequestBody requestBody = formBodyBuilder.build();
-        Request request = new Request.Builder().url("http://jwgl.just.edu.cn:8080/jsxsd/xskb/xskb_list.do")
+        Request request = new Request.Builder()
+                .url("https://vpn.just.edu.cn/jsxsd/xskb/,DanaInfo=jwgl.just.edu.cn,Port=8080+xskb_list.do")
                 .headers(requestHeaders)
                 .header("Cookie", cookie)
                 .post(requestBody).build();

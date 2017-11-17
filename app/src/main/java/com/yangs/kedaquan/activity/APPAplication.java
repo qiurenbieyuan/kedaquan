@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -46,11 +47,12 @@ public class APPAplication extends Application {
     public static Boolean bbs_login_status_check;
     public static String vpn_user;
     public static String vpn_pwd;
+    public static Boolean isInitWebview;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        debug = true;
+        debug = false;
         bbs_login_status = false;
         bbs_login_status_check = false;
         context = getApplicationContext();
@@ -63,6 +65,7 @@ public class APPAplication extends Application {
         if (bbsSource == null) {
             bbsSource = new BBSSource();
         }
+        isInitWebview = save.getBoolean("isInitWebview", false);
         vpn_user = save.getString("vpn_user", "");
         vpn_pwd = save.getString("vpn_pwd", "");
         vpnSource = new VpnSource(vpn_user, vpn_pwd);
@@ -91,7 +94,21 @@ public class APPAplication extends Application {
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(getApplicationContext());
         }
-        QbSdk.initX5Environment(context, null);
+        QbSdk.initX5Environment(context, new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+
+            }
+
+            @Override
+            public void onViewInitFinished(boolean b) {
+                if (b) {
+                    Log.i("TAG", "X5内核加载成功");
+                } else {
+                    Log.i("TAG", "X5内核加载失败");
+                }
+            }
+        });
     }
 
     public static Context getContext() {

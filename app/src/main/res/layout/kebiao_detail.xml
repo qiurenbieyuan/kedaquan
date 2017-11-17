@@ -9,9 +9,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/kebiao_detail_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:background="@color/colorPrimary"
-        app:titleTextColor="@color/white"
-        android:layout_height="48dp">
+        app:titleTextColor="@color/white">
 
     </android.support.v7.widget.Toolbar>
 
@@ -177,11 +177,14 @@
             android:textSize="18dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="40dp">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    </LinearLayout>
+    <View
+        android:id="@+id/kebiao_detail_ad"
+        android:layout_width="match_parent"
+        android:layout_height="125dp" />
 
 </LinearLayout>

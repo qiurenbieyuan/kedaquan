@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -22,9 +25,16 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.CookieManager;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.yangs.kedaquan.R;
 import com.yangs.kedaquan.activity.APPAplication;
 import com.yangs.kedaquan.activity.Browser;
+import com.yangs.kedaquan.activity.VpnLoginActivity;
 import com.yangs.kedaquan.book.Book_Find;
 import com.yangs.kedaquan.coursepj.CoursePJ;
 import com.yangs.kedaquan.find.FindMainAdapter;
@@ -210,6 +220,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            startActivity(new Intent(getContext(), VpnLoginActivity.class));
                         }
                     }).create().show();
         } else {
@@ -218,7 +229,44 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                 public void onResult(int code) {
                     switch (code) {
                         case 0:
-                            gotoPage(position);
+                            if (APPAplication.isInitWebview) {
+                                gotoPage(position);
+                            } else {
+                                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                                progressDialog.setCancelable(false);
+                                progressDialog.setMessage("首次使用,正在初始化...");
+                                progressDialog.show();
+                                String cookie = APPAplication.save.getString("vpn_cookie", "");
+                                String url = "https://vpn.just.edu.cn/,DanaInfo=jwgl.just.edu.cn,Port=8080+";
+                                final WebView webView = new WebView(getContext());
+                                webView.getSettings().setJavaScriptEnabled(true);
+                                if (cookie != null) {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                                        CookieSyncManager.createInstance(getContext());
+                                    }
+                                    CookieManager cookieManager = CookieManager.getInstance();
+                                    for (String t : cookie.split(";")) {
+                                        cookieManager.setCookie(url, t);
+                                    }
+                                }
+                                webView.loadUrl(url);
+                                webView.setWebViewClient(new WebViewClient() {
+                                    @Override
+                                    public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
+                                        sslErrorHandler.proceed();
+                                    }
+
+                                    @Override
+                                    public void onPageFinished(WebView view, String url) {
+                                        super.onPageFinished(view, url);
+                                        webView.destroy();
+                                        APPAplication.isInitWebview = true;
+                                        APPAplication.save.edit().putBoolean("isInitWebview", true).apply();
+                                        progressDialog.dismiss();
+                                        gotoPage(position);
+                                    }
+                                });
+                            }
                             break;
                         case -1:
                             APPAplication.showDialog(getContext(),

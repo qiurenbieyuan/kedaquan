@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements
         OnClickListener, MeFragment.OnLoginListener, KebiaoFragment.OnKebiaoRefreshListener {
 
     private long exitTime = 0;
-    private Handler handler;
     private String tmp_version;
     private TextView bottom_tv_kebiao;
     private ImageView bottom_iv_kebiao;
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
         }
-        setHandler();
         mTabKebiao = (LinearLayout) findViewById(R.id.id_tab_kebiao);
         mTabSchool = (LinearLayout) findViewById(R.id.id_tab_school);
         mTabFind = (LinearLayout) findViewById(R.id.id_tab_find);
@@ -99,6 +97,91 @@ public class MainActivity extends AppCompatActivity implements
             checkUpdate();
         }
     }
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what) {
+                case 3:
+                    if (waitingDialog != null)
+                        waitingDialog.cancel();
+                    try {
+                        JSONObject version_tmp = new JSONObject(tmp_version);
+                        final String url = version_tmp.getString("url");
+                        final String app_name = version_tmp.getString("app_name");
+                        String info = "版本号 : " + version_tmp.getString("version") + "\n"
+                                + "大小 : " + version_tmp.getString("size") + "\n"
+                                + "详细 : \n" + version_tmp.getString("detail");
+                        getApplicationContext();
+                        new AlertDialog.Builder(MainActivity.this).setTitle("发现新版本")
+                                .setCancelable(false)
+                                .setMessage(info)
+                                .setNegativeButton("下载", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(MainActivity.this, "正在下载中...", Toast.LENGTH_SHORT).show();
+                                        mDownloadAsyncTask = new AsyncTaskUtil(MainActivity.this, handler);
+                                        mDownloadAsyncTask.execute(url, app_name);
+                                    }
+                                }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this, "新版本有更好的体验哦，推荐下载!", Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 5:
+                    APPAplication.showDialog(MainActivity.this, "学号或密码错误!");
+                    waitingDialog.dismiss();
+                    break;
+                case 6:
+                    APPAplication.showToast("抱歉，教务系统正在维护中，请稍后再绑定!", 0);
+                    waitingDialog.dismiss();
+                    break;
+                case 7:
+                    waitingDialog.setMessage("导入课表 [" + APPAplication.term + "].....");
+                    break;
+                case 8:
+                    APPAplication.showToast("导入成功!", 0);
+                    kebiaoFragment.initKebiao();
+                    kebiaoFragment.toolbar_login.setText(APPAplication.save.getString("name", ""));
+                    showFragment(1);
+                    APPAplication.sendRefreshKebiao(getApplicationContext());
+                    break;
+                case 9:
+                    waitingDialog.cancel();
+                    APPAplication.showDialog(MainActivity.this, "账号或密码为空!");
+                    break;
+                case 10:
+                    new AlertDialog.Builder(MainActivity.this).setTitle("导入课表失败")
+                            .setMessage("1.教务系统还没有公布 " + APPAplication.term + " 学期的课表,请稍后再试\n" +
+                                    "2.当前还没有完成评教，不能查看课表。\n是否需要打开 一键评教?")
+                            .setCancelable(false).setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(MainActivity.this, CoursePJ.class);
+                            startActivity(intent);
+                        }
+                    }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+                    break;
+                case 12:
+                    APPAplication.showDialog(MainActivity.this, "获取课表时正则失败!");
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+    });
 
     private void checkUpdate() {
         new Thread(new Runnable() {
@@ -341,92 +424,6 @@ public class MainActivity extends AppCompatActivity implements
         }).start();
     }
 
-    public void setHandler() {
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 3:
-                        if (waitingDialog != null)
-                            waitingDialog.cancel();
-                        try {
-                            JSONObject version_tmp = new JSONObject(tmp_version);
-                            final String url = version_tmp.getString("url");
-                            final String app_name = version_tmp.getString("app_name");
-                            String info = "版本号 : " + version_tmp.getString("version") + "\n"
-                                    + "大小 : " + version_tmp.getString("size") + "\n"
-                                    + "详细 : \n" + version_tmp.getString("detail");
-                            getApplicationContext();
-                            new AlertDialog.Builder(MainActivity.this).setTitle("发现新版本")
-                                    .setCancelable(false)
-                                    .setMessage(info)
-                                    .setNegativeButton("下载", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(MainActivity.this, "正在下载中...", Toast.LENGTH_SHORT).show();
-                                            mDownloadAsyncTask = new AsyncTaskUtil(MainActivity.this, handler);
-                                            mDownloadAsyncTask.execute(url, app_name);
-                                        }
-                                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(MainActivity.this, "新版本有更好的体验哦，推荐下载!", Toast.LENGTH_SHORT).show();
-                                }
-                            }).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case 5:
-                        APPAplication.showDialog(MainActivity.this, "学号或密码错误!");
-                        waitingDialog.dismiss();
-                        break;
-                    case 6:
-                        APPAplication.showToast("抱歉，教务系统正在维护中，请稍后再绑定!", 0);
-                        waitingDialog.dismiss();
-                        break;
-                    case 7:
-                        waitingDialog.setMessage("导入课表 [" + APPAplication.term + "].....");
-                        break;
-                    case 8:
-                        APPAplication.showToast("导入成功!", 0);
-                        kebiaoFragment.initKebiao();
-                        kebiaoFragment.toolbar_login.setText(APPAplication.save.getString("name", ""));
-                        showFragment(1);
-                        APPAplication.sendRefreshKebiao(getApplicationContext());
-                        break;
-                    case 9:
-                        waitingDialog.cancel();
-                        APPAplication.showDialog(MainActivity.this, "账号或密码为空!");
-                        break;
-                    case 10:
-                        new AlertDialog.Builder(MainActivity.this).setTitle("导入课表失败")
-                                .setMessage("1.教务系统还没有公布 " + APPAplication.term + " 学期的课表,请稍后再试\n" +
-                                        "2.当前还没有完成评教，不能查看课表。\n是否需要打开 一键评教?")
-                                .setCancelable(false).setPositiveButton("是", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Intent intent = new Intent(MainActivity.this, CoursePJ.class);
-                                startActivity(intent);
-                            }
-                        }).setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-                        break;
-                    case 12:
-                        APPAplication.showDialog(MainActivity.this, "获取课表时正则失败!");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

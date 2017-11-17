@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +38,7 @@ public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuIt
     private TextView jc;
     private int index;
     private Bundle bundle;
+    private View v_ad;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,13 +50,14 @@ public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kebiao_detail);
-        toolbar = (Toolbar) findViewById(R.id.kebiao_detail_toolbar);
-        kcm = (TextView) findViewById(R.id.kebiao_detail_kcm);
-        kcdm = (TextView) findViewById(R.id.kebiao_detail_kcdm);
-        ls = (TextView) findViewById(R.id.kebiao_detail_ls);
-        js = (TextView) findViewById(R.id.kebiao_detail_js);
-        zc = (TextView) findViewById(R.id.kebiao_detail_zc);
-        jc = (TextView) findViewById(R.id.kebiao_detail_jc);
+        toolbar = findViewById(R.id.kebiao_detail_toolbar);
+        kcm = findViewById(R.id.kebiao_detail_kcm);
+        kcdm = findViewById(R.id.kebiao_detail_kcdm);
+        ls = findViewById(R.id.kebiao_detail_ls);
+        js = findViewById(R.id.kebiao_detail_js);
+        zc = findViewById(R.id.kebiao_detail_zc);
+        jc = findViewById(R.id.kebiao_detail_jc);
+        v_ad = findViewById(R.id.kebiao_detail_ad);
         toolbar.setNavigationIcon(R.drawable.ic_arraw_back_white);
         bundle = this.getIntent().getExtras();
         index = Integer.parseInt(bundle.getString("index"));
@@ -94,6 +99,22 @@ public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuIt
                 break;
 
         }
+        v_ad.setBackgroundResource(R.drawable.bg_ad_1);
+        v_ad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PackageManager packageManager = getPackageManager();
+                try {
+                    packageManager.getPackageInfo("com.tencent.mobileqq", 0);
+                    String url = "mqqwpa://im/chat?chat_type=wpa&uin=985581806";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (PackageManager.NameNotFoundException e) {
+                    APPAplication.showToast("安装QQ后才能抢占名额哦", 0);
+                }
+            }
+        });
     }
 
     @Override
@@ -111,12 +132,12 @@ public class Kebiao_detail extends AppCompatActivity implements Toolbar.OnMenuIt
             case R.id.kebiao_detail_menu_change:
                 LayoutInflater layoutInflater = LayoutInflater.from(this);
                 View view = layoutInflater.inflate(R.layout.kebiao_detail_change_dailog, null);
-                final EditText c_kcm = (EditText) view.findViewById(R.id.kebiao_detail_kcm_c);
-                final EditText c_kcdm = (EditText) view.findViewById(R.id.kebiao_detail_kcdm_c);
-                final EditText c_ls = (EditText) view.findViewById(R.id.kebiao_detail_ls_c);
-                final EditText c_js = (EditText) view.findViewById(R.id.kebiao_detail_js_c);
-                final EditText c_zc = (EditText) view.findViewById(R.id.kebiao_detail_zc_c);
-                final EditText c_jc = (EditText) view.findViewById(R.id.kebiao_detail_jc_c);
+                final EditText c_kcm = view.findViewById(R.id.kebiao_detail_kcm_c);
+                final EditText c_kcdm = view.findViewById(R.id.kebiao_detail_kcdm_c);
+                final EditText c_ls = view.findViewById(R.id.kebiao_detail_ls_c);
+                final EditText c_js = view.findViewById(R.id.kebiao_detail_js_c);
+                final EditText c_zc = view.findViewById(R.id.kebiao_detail_zc_c);
+                final EditText c_jc = view.findViewById(R.id.kebiao_detail_jc_c);
                 Dialog dialog = new AlertDialog.Builder(this).setView(view).setTitle("修改课程")
                         .setCancelable(false)
                         .setPositiveButton("取消", new DialogInterface.OnClickListener() {

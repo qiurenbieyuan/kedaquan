@@ -32,10 +32,14 @@ public class AppWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (intent == null)
             return;
-        if (intent.getAction().equals(ACTION_BUTTON)) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            ComponentName componentName = new ComponentName(context, AppWidget.class);
-            appWidgetManager.updateAppWidget(componentName, refreshKebiao(context));
+        try {
+            if (intent.getAction().equals(ACTION_BUTTON)) {
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                ComponentName componentName = new ComponentName(context, AppWidget.class);
+                appWidgetManager.updateAppWidget(componentName, refreshKebiao(context));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -112,6 +112,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            startActivity(new Intent(getContext(), VpnLoginActivity.class));
                         }
                     }).create().show();
                 } else {
@@ -191,8 +192,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
                 View view = getActivity().getLayoutInflater().inflate(R.layout.me_advice_dialog, null);
-                final Button advice_bt_1 =  view.findViewById(R.id.me_advice_dialog_bt_1);
-                final Button advice_et_2 =  view.findViewById(R.id.me_advice_dialog_bt_2);
+                final Button advice_bt_1 = view.findViewById(R.id.me_advice_dialog_bt_1);
+                final Button advice_et_2 = view.findViewById(R.id.me_advice_dialog_bt_2);
                 advice_bt_1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

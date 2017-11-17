@@ -1,8 +1,10 @@
 package com.yangs.kedaquan.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.CookieManager;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.yangs.kedaquan.R;
 import com.yangs.kedaquan.score.VpnSource;
 
@@ -30,18 +37,20 @@ public class KebiaoGetActivity extends AppCompatActivity implements View.OnClick
     private int kebiao_status_code;
     private VpnSource vpnSource;
     private ProgressDialog progressDialog;
+    private Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kebiaogetactivity_layout);
         progressDialog = new ProgressDialog(this);
+        context = this;
         progressDialog.setCancelable(false);
-        toolbar = (Toolbar) findViewById(R.id.kebiaogetactivity_toolbar);
-        et_user = (EditText) findViewById(R.id.kebiaogetactivity_et_user);
-        et_pwd = (EditText) findViewById(R.id.kebiaogetactivity_et_pwd);
-        bt_login = (Button) findViewById(R.id.kebiaogetactivity_bt_login);
-        tv_forget = (TextView) findViewById(R.id.kebiaogetactivity_tv_forget);
+        toolbar = findViewById(R.id.kebiaogetactivity_toolbar);
+        et_user = findViewById(R.id.kebiaogetactivity_et_user);
+        et_pwd = findViewById(R.id.kebiaogetactivity_et_pwd);
+        bt_login = findViewById(R.id.kebiaogetactivity_bt_login);
+        tv_forget = findViewById(R.id.kebiaogetactivity_tv_forget);
         bt_login.setOnClickListener(this);
         tv_forget.setOnClickListener(this);
         toolbar.setNavigationIcon(R.drawable.ic_arraw_back_white);
@@ -118,13 +127,54 @@ public class KebiaoGetActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.kebiaogetactivity_tv_forget:
-                Bundle bundle = new Bundle();
-                bundle.putString("url", "https://vpn.just.edu.cn/framework/,DanaInfo=jwgl.just.edu.cn,Port=8080+enteraccount.jsp");
-                bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
-                Intent intent = new Intent(KebiaoGetActivity.this, Browser.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if (APPAplication.isInitWebview) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", "https://vpn.just.edu.cn/framework/,DanaInfo=jwgl.just.edu.cn,Port=8080+enteraccount.jsp");
+                    bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
+                    Intent intent = new Intent(KebiaoGetActivity.this, Browser.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    final ProgressDialog pd = new ProgressDialog(context);
+                    pd.setCancelable(false);
+                    pd.setMessage("首次使用,正在初始化...");
+                    pd.show();
+                    String cookie = APPAplication.save.getString("vpn_cookie", "");
+                    String url = "https://vpn.just.edu.cn/,DanaInfo=jwgl.just.edu.cn,Port=8080+";
+                    final WebView webView = new WebView(context);
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        CookieSyncManager.createInstance(context);
+                    }
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    for (String t : cookie.split(";")) {
+                        cookieManager.setCookie(url, t);
+                    }
+                    webView.loadUrl(url);
+                    webView.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
+                            sslErrorHandler.proceed();
+                        }
+
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            super.onPageFinished(view, url);
+                            webView.destroy();
+                            APPAplication.isInitWebview = true;
+                            APPAplication.save.edit().putBoolean("isInitWebview", true).apply();
+                            pd.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("url", "https://vpn.just.edu.cn/framework/,DanaInfo=jwgl.just.edu.cn,Port=8080+enteraccount.jsp");
+                            bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
+                            Intent intent = new Intent(KebiaoGetActivity.this, Browser.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
+                }
                 break;
             case R.id.kebiaogetactivity_bt_login:
                 final String user = et_user.getText().toString().trim();

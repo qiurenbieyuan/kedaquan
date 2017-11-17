@@ -40,13 +40,13 @@
         <LinearLayout style="@style/wrap_layout3">
 
             <LinearLayout
-                android:id="@+id/me_about_gw"
+                android:id="@+id/me_about_zr"
                 style="@style/single_layout2">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="官网"
+                    android:text="招人！！"
                     android:textColor="@color/gallery_black"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -68,13 +68,13 @@
             <View style="@style/bg_line" />
 
             <LinearLayout
-                android:id="@+id/me_about_source"
+                android:id="@+id/me_about_share"
                 style="@style/mid_layout2">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="数据来源"
+                    android:text="分享给好友"
                     android:textColor="@color/gallery_black"
                     android:textSize="18sp" />
 

@@ -105,7 +105,7 @@ public class KebiaoFragment extends LazyLoadFragment implements Toolbar.OnMenuIt
     }
 
     public interface OnKebiaoRefreshListener {
-        public void onKebiaoRefresh(Intent data);
+        void onKebiaoRefresh(Intent data);
     }
 
     private void initView() {

@@ -106,7 +106,7 @@ public class BBSFragment extends LazyLoadFragment implements OnItemClickListener
         lRecyclerView.setOnRefreshListener(this);
         lRecyclerView.setOnLoadMoreListener(this);
         fb = mLay.findViewById(R.id.articlefragment_fab);
-        fb.setImageResource(R.drawable.ic_add_black_24dp);
+        fb.setImageResource(R.drawable.ic_bbs_add);
         fb.setOnClickListener(this);
         fb.attachToRecyclerView(lRecyclerView);
         lRecyclerView.refresh();

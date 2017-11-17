@@ -2,14 +2,17 @@ package com.yangs.kedaquan.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import android.widget.ProgressBar;
 
 import com.tencent.smtt.export.external.interfaces.JsPromptResult;
 import com.tencent.smtt.export.external.interfaces.JsResult;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -33,7 +37,7 @@ import com.yangs.kedaquan.R;
  */
 
 public class Browser extends AppCompatActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
-    private com.tencent.smtt.sdk.WebView webview;
+    private WebView webview;
     private ProgressBar bar;
     private Toolbar toolbar;
     private String url;
@@ -81,7 +85,7 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
                 if (newProgress == 100) {
                     if (bar != null)
                         bar.setVisibility(View.GONE);
-                    if (view.getUrl().contains("202.195.195.198")) {
+                    if (view != null && view.getUrl().contains("202.195.195.198")) {
                         view.loadUrl("javascript:{" +
                                 "var id=document.getElementById('iframe2');" +
                                 "id.style.height='388px';" +
@@ -164,11 +168,21 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
             }
         });
         webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("TAG", "网页加载完成");
+                super.onPageFinished(view, url);
+            }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
+                sslErrorHandler.proceed();
             }
 
             @Override
@@ -179,8 +193,23 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
                     try {
                         Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(in);
+                        finish();
                     } catch (Exception e) {
-                        APPAplication.showToast("拉起qq失败,请反馈给程序猿!", 1);
+                        if (url.contains("tencent://message/?uin=")) {
+                            String s = url.replace("tencent://message/?uin=", "")
+                                    .replace("&Site=qq&Menu=yes", "");
+                            PackageManager packageManager = getPackageManager();
+                            try {
+                                packageManager.getPackageInfo("com.tencent.mobileqq", 0);
+                                url = "mqqwpa://im/chat?chat_type=wpa&uin=" + s;
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            } catch (PackageManager.NameNotFoundException ee) {
+                                APPAplication.showToast("安装QQ后才能抢占名额哦", 0);
+                            }
+                            finish();
+                        }
                     }
                     return null;
                 }
@@ -189,7 +218,7 @@ public class Browser extends AppCompatActivity implements View.OnClickListener, 
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAppCacheEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);

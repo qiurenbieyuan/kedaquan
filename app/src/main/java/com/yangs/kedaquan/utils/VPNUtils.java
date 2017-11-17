@@ -12,7 +12,7 @@ import com.yangs.kedaquan.activity.APPAplication;
 
 public class VPNUtils {
     public interface onReultListener {
-        public void onResult(int code);
+        void onResult(int code);
     }
 
     /*
