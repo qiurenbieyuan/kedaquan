@@ -48,11 +48,12 @@ public class APPAplication extends Application {
     public static String vpn_user;
     public static String vpn_pwd;
     public static Boolean isInitWebview;
+    public static Boolean isTyLogin;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        debug = false;
+        debug = true;
         bbs_login_status = false;
         bbs_login_status_check = false;
         context = getApplicationContext();
@@ -65,7 +66,8 @@ public class APPAplication extends Application {
         if (bbsSource == null) {
             bbsSource = new BBSSource();
         }
-        isInitWebview = save.getBoolean("isInitWebview", false);
+        isInitWebview = false;
+        isTyLogin = false;
         vpn_user = save.getString("vpn_user", "");
         vpn_pwd = save.getString("vpn_pwd", "");
         vpnSource = new VpnSource(vpn_user, vpn_pwd);

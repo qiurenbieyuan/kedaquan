@@ -118,7 +118,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
                 } else {
                     VPNUtils.checkVpnIsValid(getContext(), new VPNUtils.onReultListener() {
                         @Override
-                        public void onResult(int code) {
+                        public void onResult(int code, ProgressDialog progressDialog) {
+                            progressDialog.dismiss();
                             switch (code) {
                                 case 0:
                                     startActivityForResult(new Intent(getContext(), KebiaoGetActivity.class)

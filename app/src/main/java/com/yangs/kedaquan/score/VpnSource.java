@@ -191,6 +191,32 @@ public class VpnSource {
     }
 
     /*
+    0:  success
+    -1: error
+    -2: network error
+     */
+    public int loginTy(String user, String pwd) {
+        FormBody.Builder formBodyBuilder = new FormBody.Builder().add("username", user)
+                .add("password", pwd).add("chkuser", "true");
+        RequestBody requestBody = formBodyBuilder.build();
+        Request request = new Request.Builder().url("https://vpn.just.edu.cn/,DanaInfo=202.195.195.147+index1.asp")
+                .headers(requestHeaders).post(requestBody).header("Cookie", cookie).build();
+        try {
+            Response response = mOkHttpClient.newCall(request).execute();
+            byte[] b = response.body().bytes();
+            String info = new String(b, "GB2312");
+            if (info.contains("密码或用户名不正确")) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
+    /*
     0: success
     -2: network error
      */

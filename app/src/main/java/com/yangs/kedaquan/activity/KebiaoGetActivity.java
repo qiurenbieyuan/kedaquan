@@ -138,7 +138,7 @@ public class KebiaoGetActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     final ProgressDialog pd = new ProgressDialog(context);
                     pd.setCancelable(false);
-                    pd.setMessage("首次使用,正在初始化...");
+                    pd.setMessage("加载中...");
                     pd.show();
                     String cookie = APPAplication.save.getString("vpn_cookie", "");
                     String url = "https://vpn.just.edu.cn/,DanaInfo=jwgl.just.edu.cn,Port=8080+";
@@ -163,7 +163,6 @@ public class KebiaoGetActivity extends AppCompatActivity implements View.OnClick
                             super.onPageFinished(view, url);
                             webView.destroy();
                             APPAplication.isInitWebview = true;
-                            APPAplication.save.edit().putBoolean("isInitWebview", true).apply();
                             pd.dismiss();
                             Bundle bundle = new Bundle();
                             bundle.putString("url", "https://vpn.just.edu.cn/framework/,DanaInfo=jwgl.just.edu.cn,Port=8080+enteraccount.jsp");

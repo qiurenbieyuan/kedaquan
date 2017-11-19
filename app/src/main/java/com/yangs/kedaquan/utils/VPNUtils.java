@@ -12,7 +12,7 @@ import com.yangs.kedaquan.activity.APPAplication;
 
 public class VPNUtils {
     public interface onReultListener {
-        void onResult(int code);
+        void onResult(int code, ProgressDialog progressDialog);
     }
 
     /*
@@ -36,8 +36,7 @@ public class VPNUtils {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                progressDialog.dismiss();
-                                onReultListener.onResult(0);
+                                onReultListener.onResult(0, progressDialog);
                             }
                         });
                         break;
@@ -47,19 +46,18 @@ public class VPNUtils {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                progressDialog.dismiss();
                                 switch (finalCode) {
                                     case 0:
-                                        onReultListener.onResult(0);
+                                        onReultListener.onResult(0, progressDialog);
                                         break;
                                     case -1:
-                                        onReultListener.onResult(-1);
+                                        onReultListener.onResult(-1, progressDialog);
                                         break;
                                     case -2:
-                                        onReultListener.onResult(-2);
+                                        onReultListener.onResult(-2, progressDialog);
                                         break;
                                     case -3:
-                                        onReultListener.onResult(-3);
+                                        onReultListener.onResult(-3, progressDialog);
                                 }
                             }
                         });
@@ -68,8 +66,7 @@ public class VPNUtils {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                progressDialog.dismiss();
-                                onReultListener.onResult(-3);
+                                onReultListener.onResult(-3, progressDialog);
                             }
                         });
                         break;

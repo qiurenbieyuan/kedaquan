@@ -28,8 +28,7 @@ public class FindMainAdapter extends RecyclerView.Adapter<FindMainAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.find_item_layout, parent, false);
-        ViewHolder view2 = new ViewHolder(view);
-        return view2;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class FindMainAdapter extends RecyclerView.Adapter<FindMainAdapter.ViewHo
 
         public ViewHolder(View view) {
             super(view);
-            item = (TextView) view.findViewById(R.id.item_tv);
+            item = view.findViewById(R.id.item_tv);
         }
     }
 }

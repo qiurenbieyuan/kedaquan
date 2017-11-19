@@ -18,10 +18,10 @@
             android:layout_margin="10dp">
 
             <EditText
-                android:id="@+id/vpn_dialog_et_user"
+                android:id="@+id/ty_login_dialog_et_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="用户名"
+                android:hint="学号"
                 android:textSize="15sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -31,28 +31,20 @@
             android:layout_margin="10dp">
 
             <EditText
-                android:id="@+id/vpn_dialog_et_pwd"
+                android:id="@+id/ty_login_dialog_et_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="密码"
+                android:hint="体育密码(姓名的首字母大写，如张三：ZS)"
                 android:inputType="textPassword"
                 android:textSize="15sp" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/vpn_dialog_bt_login"
+            android:id="@+id/ty_login_dialog_bt_login"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="登录VPN系统" />
+            android:text="登录" />
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/vpn_dialog_pb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:visibility="gone" />
 </LinearLayout>

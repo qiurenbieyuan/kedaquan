@@ -18,7 +18,7 @@ public class KebiaoDialogActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kebiaodialog_layout);
-        textView = (TextView) findViewById(R.id.kebiadialog_tv);
+        textView = findViewById(R.id.kebiadialog_tv);
         Bundle bundle = getIntent().getExtras();
         textView.setText(bundle.getString("课程名") + "\n" +
                 bundle.getString("老师") + "\n" +

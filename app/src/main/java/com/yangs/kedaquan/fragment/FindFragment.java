@@ -11,10 +11,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipeline;
@@ -69,6 +73,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
     private Map<String, String> url_data;
     private View header_view;
     private Toolbar toolbar;
+    private AlertDialog ty_dialog;
 
     @Override
     protected int setContentView() {
@@ -92,9 +97,9 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
         toolbar = mLayFind.findViewById(R.id.find_toolbar);
         url_data = new HashMap<>();
         url_data.put("科大校历", "https://vpn.just.edu.cn/list/,DanaInfo=202.195.195.226+65.html");
-        url_data.put("体育成绩", "https://vpn.just.edu.cn/,DanaInfo=202.195.195.147");
-        url_data.put("俱乐部", "https://vpn.just.edu.cn/,DanaInfo=202.195.195.147");
-        url_data.put("早操出勤", "https://vpn.just.edu.cn/,DanaInfo=202.195.195.147");
+        url_data.put("体育成绩", "https://vpn.just.edu.cn/xsgl/,DanaInfo=202.195.195.147+cjcx.asp");
+        url_data.put("体育刷卡", "https://vpn.just.edu.cn/zcgl/,DanaInfo=202.195.195.147+xskwcx.asp?action=jlbcx");
+        url_data.put("早操出勤", "https://vpn.just.edu.cn/zcgl/,DanaInfo=202.195.195.147+xskwcx.asp?action=zccx");
         url_data.put("实验系统", "https://vpn.just.edu.cn/sy/,DanaInfo=202.195.195.198+");
         url_data.put("强智教务", "https://vpn.just.edu.cn/,DanaInfo=jwgl.just.edu.cn,Port=8080+");
         url_data.put("奥蓝系统", "https://vpn.just.edu.cn/,DanaInfo=202.195.195.238,Port=866+LOGIN.ASPX");
@@ -106,7 +111,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
         dataList.add("成绩绩点");
         dataList.add("科大校历");
         dataList.add("体育成绩");
-        dataList.add("俱乐部");
+        dataList.add("体育刷卡");
         dataList.add("早操出勤");
         dataList.add("实验系统");
         dataList.add("强智教务");
@@ -126,7 +131,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                 .setVertical(R.dimen.default_divider_padding)
                 .setColor(Color.rgb(152, 152, 152))
                 .build();
-        List<String> images = new ArrayList<String>();
+        List<String> images = new ArrayList<>();
         images.add("https://raw.githubusercontent.com/yangs2012/app/master/1.jpg");
         images.add("https://raw.githubusercontent.com/yangs2012/app/master/2.jpg");
         images.add("https://raw.githubusercontent.com/yangs2012/app/master/3.jpg");
@@ -160,7 +165,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
         if (!APPAplication.isFindUrl) {
             if (progressDialog == null)
                 progressDialog = new ProgressDialog(getContext());
-            progressDialog.setMessage("获取链接...");
+            progressDialog.setMessage("请稍后...");
             progressDialog.setCancelable(false);
             if (!progressDialog.isShowing())
                 progressDialog.show();
@@ -183,6 +188,50 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
         }
     }
 
+    private void initTy(final String user, final String pwd, final int position) {
+        if (progressDialog == null)
+            progressDialog = new ProgressDialog(getContext());
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+        progressDialog.setMessage("正在登录体育系统...");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final int code = APPAplication.vpnSource.loginTy(user, pwd);
+                progressDialog.dismiss();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (code) {
+                            case 0:
+                                if (ty_dialog != null)
+                                    ty_dialog.dismiss();
+                                APPAplication.isTyLogin = true;
+                                APPAplication.save.edit()
+                                        .putString("ty_user", user)
+                                        .putString("ty_pwd", pwd).apply();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("url", url_data.get(dataList.get(position)));
+                                bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
+                                Intent intent2 = new Intent(activity, Browser.class);
+                                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent2.putExtras(bundle);
+                                startActivity(intent2);
+                                break;
+                            case -1:
+                                APPAplication.showToast("学号或密码错误", 0);
+                                break;
+                            case -2:
+                                APPAplication.showToast("网络出错", 0);
+                                break;
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
     private void gotoPage(final int position) {
         Intent intent;
         switch (position) {
@@ -199,13 +248,55 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                 startActivity(intent);
                 break;
             default:
-                Bundle bundle = new Bundle();
-                bundle.putString("url", url_data.get(dataList.get(position)));
-                bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
-                Intent intent2 = new Intent(activity, Browser.class);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent2.putExtras(bundle);
-                startActivity(intent2);
+                if (!APPAplication.isTyLogin && (
+                        position == 2 || position == 3 || position == 4)) {
+                    String ty_user = APPAplication.save.getString("ty_user", "");
+                    String ty_pwd = APPAplication.save.getString("ty_pwd", "");
+                    if (ty_user.equals("") || ty_pwd.equals("")) {
+                        if (ty_dialog == null) {
+                            View view = LayoutInflater.from(getContext())
+                                    .inflate(R.layout.ty_login_dialog, null);
+                            final EditText ty_et_user = view.findViewById(R.id.ty_login_dialog_et_user);
+                            final EditText ty_et_pwd = view.findViewById(R.id.ty_login_dialog_et_pwd);
+                            Button bt_login = view.findViewById(R.id.ty_login_dialog_bt_login);
+                            ty_et_user.setText(ty_user);
+                            ty_et_pwd.setText(ty_pwd);
+                            ty_dialog = new AlertDialog.Builder(getContext())
+                                    .setTitle("登录到体育管理系统").setView(view).create();
+                            bt_login.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    final String user = ty_et_user.getText().toString().trim();
+                                    final String pwd = ty_et_pwd.getText().toString().trim();
+                                    if (user.equals("")) {
+                                        ty_et_user.setError("请输入学号");
+                                        return;
+                                    } else {
+                                        ty_et_user.setError(null);
+                                    }
+                                    if (pwd.equals("")) {
+                                        ty_et_pwd.setError("请输入密码");
+                                        return;
+                                    } else {
+                                        ty_et_pwd.setError(null);
+                                    }
+                                    initTy(user, pwd, position);
+                                }
+                            });
+                        }
+                        ty_dialog.show();
+                    } else {
+                        initTy(ty_user, ty_pwd, position);
+                    }
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", url_data.get(dataList.get(position)));
+                    bundle.putString("cookie", APPAplication.save.getString("vpn_cookie", ""));
+                    Intent intent2 = new Intent(activity, Browser.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent2.putExtras(bundle);
+                    startActivity(intent2);
+                }
                 break;
         }
     }
@@ -226,16 +317,13 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
         } else {
             VPNUtils.checkVpnIsValid(getContext(), new VPNUtils.onReultListener() {
                 @Override
-                public void onResult(int code) {
+                public void onResult(int code, final ProgressDialog progressDialog) {
                     switch (code) {
                         case 0:
                             if (APPAplication.isInitWebview) {
+                                progressDialog.dismiss();
                                 gotoPage(position);
                             } else {
-                                final ProgressDialog progressDialog = new ProgressDialog(getContext());
-                                progressDialog.setCancelable(false);
-                                progressDialog.setMessage("首次使用,正在初始化...");
-                                progressDialog.show();
                                 String cookie = APPAplication.save.getString("vpn_cookie", "");
                                 String url = "https://vpn.just.edu.cn/,DanaInfo=jwgl.just.edu.cn,Port=8080+";
                                 final WebView webView = new WebView(getContext());
@@ -261,7 +349,6 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                                         super.onPageFinished(view, url);
                                         webView.destroy();
                                         APPAplication.isInitWebview = true;
-                                        APPAplication.save.edit().putBoolean("isInitWebview", true).apply();
                                         progressDialog.dismiss();
                                         gotoPage(position);
                                     }
@@ -269,10 +356,12 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                             }
                             break;
                         case -1:
+                            progressDialog.dismiss();
                             APPAplication.showDialog(getContext(),
                                     "VPN密码错误,请重新绑定!");
                             break;
                         case -2:
+                            progressDialog.dismiss();
                             new android.app.AlertDialog.Builder(getContext())
                                     .setTitle("提示").setMessage("此用户已经在其他地方登录,点击确定后" +
                                     "会自动打开一个浏览器页面,请在页面里点击继续会话,然后点击右上角的" +
@@ -291,6 +380,7 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                                     }).create().show();
                             break;
                         case -3:
+                            progressDialog.dismiss();
                             APPAplication.showDialog(getContext(), "网络错误");
                             break;
                     }
