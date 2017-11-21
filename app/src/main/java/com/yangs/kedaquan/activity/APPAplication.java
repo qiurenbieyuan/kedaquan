@@ -16,7 +16,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.tencent.smtt.sdk.QbSdk;
 import com.yangs.kedaquan.bbs.BBSSource;
-import com.yangs.kedaquan.score.VpnSource;
+import com.yangs.kedaquan.utils.VpnSource;
 import com.yangs.kedaquan.utils.CrashHandler;
 
 import java.text.ParseException;
@@ -53,7 +53,7 @@ public class APPAplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        debug = true;
+        debug = false;
         bbs_login_status = false;
         bbs_login_status_check = false;
         context = getApplicationContext();

@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yangs.kedaquan.R;
-import com.yangs.kedaquan.score.VpnSource;
+import com.yangs.kedaquan.utils.VpnSource;
 
 /**
  * Created by yangs on 2017/11/16 0016.

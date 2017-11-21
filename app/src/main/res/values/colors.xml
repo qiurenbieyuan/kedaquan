@@ -15,10 +15,12 @@
     <color name="yellow_press">#e5b524</color>
     <color name="gray">#efeaea</color>
     <color name="gray2">#e8e1e1</color>
+    <color name="gray4">#ebe7e7</color>
     <!-- 描边颜色 -->
     <color name="border_clo">#ccc</color>
     <color name="color_00">#8A000000</color>
     <color name="text_clo">#333</color>
+    <color name="gray3">#8897ac</color>
     <color name="white">#ffffff</color>
     <color name="kebiao_header_color">#33FFFFFF</color>
     <color name="blue">#419de4</color>

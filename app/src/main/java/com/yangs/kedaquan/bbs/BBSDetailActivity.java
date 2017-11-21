@@ -76,7 +76,7 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bbsdetail_layout);
         setHandler();
-        toolbar = (Toolbar) findViewById(R.id.bbsdetail_toolbar);
+        toolbar = findViewById(R.id.bbsdetail_toolbar);
         Bundle bundle = getIntent().getExtras();
         url = bundle.getString("url");
         name = bundle.getString("name");
@@ -91,22 +91,22 @@ public class BBSDetailActivity extends AppCompatActivity implements OnItemClickL
             }
         });
         toolbar.setOnMenuItemClickListener(this);
-        lay_bottom = (LinearLayout) findViewById(R.id.bbsdetail_layout_bottom);
-        bbsdetail_et_text = (EditText) lay_bottom.findViewById(R.id.bbsdetail_et_text);
-        bbsdetail_bt_sub = (ImageView) lay_bottom.findViewById(R.id.bbsdetail_bt_sub);
+        lay_bottom = findViewById(R.id.bbsdetail_layout_bottom);
+        bbsdetail_et_text = lay_bottom.findViewById(R.id.bbsdetail_et_text);
+        bbsdetail_bt_sub = lay_bottom.findViewById(R.id.bbsdetail_bt_sub);
         bbsdetail_et_text.addTextChangedListener(this);
         bbsdetail_bt_sub.setOnClickListener(this);
-        lRecyclerView = (LRecyclerView) findViewById(R.id.bbsdetail_layout_lr);
+        lRecyclerView = findViewById(R.id.bbsdetail_layout_lr);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         bbsDetailAdapter = new BBSDetailAdapter(list, this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(bbsDetailAdapter);
         header_view = LayoutInflater.from(this).inflate(R.layout.bbsdetail_header_view,
                 (ViewGroup) findViewById(android.R.id.content), false);
-        header_title = (TextView) header_view.findViewById(R.id.bbsdetail_header_tv_title);
-        header_iv = (SimpleDraweeView) header_view.findViewById(R.id.bbsdetail_header_iv);
-        header_tv_user = (TextView) header_view.findViewById(R.id.bbsdetail_header_tv_user);
-        header_tv_time = (TextView) header_view.findViewById(R.id.bbsdetail_header_tv_time);
-        header_tv_content = (TextView) header_view.findViewById(R.id.bbsdetail_header_tv_content);
+        header_title = header_view.findViewById(R.id.bbsdetail_header_tv_title);
+        header_iv = header_view.findViewById(R.id.bbsdetail_header_iv);
+        header_tv_user = header_view.findViewById(R.id.bbsdetail_header_tv_user);
+        header_tv_time = header_view.findViewById(R.id.bbsdetail_header_tv_time);
+        header_tv_content = header_view.findViewById(R.id.bbsdetail_header_tv_content);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
         lRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.gallery_dark_gray, android.R.color.white);
         lRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.gallery_dark_gray, android.R.color.white);

@@ -1,4 +1,4 @@
-package com.yangs.kedaquan.score;
+package com.yangs.kedaquan.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;

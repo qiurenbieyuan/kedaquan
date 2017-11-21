@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <EditText
+                android:id="@+id/score_login_dialog_et_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="学号"
+                android:textSize="15sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <EditText
+                android:id="@+id/score_login_dialog_et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="教务密码(遗忘请在导入课表里找回密码)"
+                android:inputType="textPassword"
+                android:textSize="15sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/score_login_dialog_bt_login"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="点击查询" />
+    </LinearLayout>
+</LinearLayout>

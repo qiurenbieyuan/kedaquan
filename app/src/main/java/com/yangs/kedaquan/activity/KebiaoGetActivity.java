@@ -22,7 +22,7 @@ import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.yangs.kedaquan.R;
-import com.yangs.kedaquan.score.VpnSource;
+import com.yangs.kedaquan.utils.VpnSource;
 
 /**
  * Created by yangs on 2017/11/16 0016.

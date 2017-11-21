@@ -31,20 +31,25 @@ public class Splash extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_layout);
-        linearLayout = findViewById(R.id.splash_layout);
-        tv_skip = findViewById(R.id.splash_tv_skip);
-        linearLayout.setBackgroundResource(R.drawable.bg_splash);
-        linearLayout.setOnClickListener(this);
-        tv_skip.setOnClickListener(this);
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                handler.sendEmptyMessage(1);
-            }
-        };
-        timer = new Timer();
-        timer.schedule(task, 100, 1000);
+        if (APPAplication.debug) {
+            startActivity(new Intent(Splash.this, MainActivity.class));
+            finish();
+        } else {
+            setContentView(R.layout.splash_layout);
+            linearLayout = findViewById(R.id.splash_layout);
+            tv_skip = findViewById(R.id.splash_tv_skip);
+            linearLayout.setBackgroundResource(R.drawable.bg_splash);
+            linearLayout.setOnClickListener(this);
+            tv_skip.setOnClickListener(this);
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.sendEmptyMessage(1);
+                }
+            };
+            timer = new Timer();
+            timer.schedule(task, 100, 1000);
+        }
     }
 
     @Override

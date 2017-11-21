@@ -18,6 +18,7 @@
 
     <style name="ToolbarTheme">
         <item name="colorControlNormal">#ffffff</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">

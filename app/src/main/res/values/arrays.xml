@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="score_array">
+        <item>2015-2016-1</item>
+        <item>2015-2016-2</item>
+        <item>2016-2017-1</item>
+        <item>2016-2017-2</item>
+        <item>2017-2018-1</item>
+    </string-array>
+</resources>

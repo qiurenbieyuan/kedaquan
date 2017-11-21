@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".score.ScoreActivity">
+    <item
+        android:id="@+id/score_menu_zx"
+        android:title="自选"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/score_menu_switch2"
+        android:orderInCategory="100"
+        android:title="切换账号"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/score_menu_switch"
+        android:orderInCategory="100"
+        android:title="切换学期"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/score_menu_advie"
+        android:orderInCategory="100"
+        android:title="反馈"
+        app:showAsAction="never" />
+
+
+</menu>

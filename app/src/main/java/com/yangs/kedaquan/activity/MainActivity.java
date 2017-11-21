@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements
                     handler.sendEmptyMessage(9);
                 } else {
                     getKebiaoSource getKebiaoSource = new getKebiaoSource(bundle.getString("user"), bundle.getString("pwd"), MainActivity.this);
-                    switch (getKebiaoSource.checkUser(getApplicationContext())) {
+                    switch (getKebiaoSource.checkUser()) {
                         case 0:
                             try {
                                 APPAplication.term = bundle.getString("term");

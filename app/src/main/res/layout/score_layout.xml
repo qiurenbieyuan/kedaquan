@@ -5,14 +5,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/top" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/score_layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@drawable/ic_arraw_back_white"
+        app:theme="@style/ToolbarTheme"
+        app:titleTextColor="@color/white" />
 
-    <com.github.jdsjlzx.recyclerview.LRecyclerView
-        android:id="@+id/score_lr"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/score_layout_srl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray">
 
-    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/score_layout_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/score_layout_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="还没有成绩"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

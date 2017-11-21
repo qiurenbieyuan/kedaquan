@@ -29,6 +29,19 @@ public class VersionControl {
                 .followSslRedirects(false).build();
     }
 
+    public void recordGPA(String content) {
+        FormBody.Builder formBodyBuilder = new FormBody.Builder()
+                .add("check", "yangs").add("content", content);
+        RequestBody requestBody = formBodyBuilder.build();
+        Request request = new Request.Builder().url("http://www.myangs.com:8080/gpa_record.jsp")
+                .headers(requestHeaders).post(requestBody).build();
+        try {
+            mOkHttpClient.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public JSONObject getServerNotice() {
         JSONObject jsonObject = null;
         FormBody.Builder formBodyBuilder = new FormBody.Builder().add("check", "yangs");

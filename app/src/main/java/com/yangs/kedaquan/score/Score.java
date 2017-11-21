@@ -77,5 +77,49 @@ public class Score {
     private String khfx;      //考核方式
     private String kcsx;    //课程属性
     private String kcxz;    //课程性质
+    private String jd;
+    private String term;
+    private Boolean isClick = false;
+    private Boolean isCheck;
+    private Boolean isCBVisil = false;
 
+    public Boolean getCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(Boolean check) {
+        isCheck = check;
+    }
+
+    public Boolean getCBVisil() {
+        return isCBVisil;
+    }
+
+    public void setCBVisil(Boolean CBVisil) {
+        isCBVisil = CBVisil;
+    }
+
+    public Boolean getClick() {
+        return isClick;
+    }
+
+    public void setClick(Boolean click) {
+        isClick = click;
+    }
+
+    public String getJd() {
+        return jd;
+    }
+
+    public void setJd(String jd) {
+        this.jd = jd;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
 }
