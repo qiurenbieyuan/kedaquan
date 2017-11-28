@@ -31,7 +31,6 @@ public class VpnLoginActivity extends AppCompatActivity implements View.OnClickL
     private TextView tv_info;
     private Button bt_login;
     private int vpn_status_code;
-    private VpnSource vpnSource;
     private ProgressDialog progressDialog;
 
     @Override
@@ -90,7 +89,7 @@ public class VpnLoginActivity extends AppCompatActivity implements View.OnClickL
                                             dialog.dismiss();
                                             Intent intent = new Intent();
                                             intent.setAction("android.intent.action.VIEW");
-                                            Uri content_url = Uri.parse(vpnSource.getLocation());
+                                            Uri content_url = Uri.parse(APPAplication.vpnSource.getLocation());
                                             intent.setData(content_url);
                                             startActivity(intent);
                                         }
@@ -127,11 +126,11 @@ public class VpnLoginActivity extends AppCompatActivity implements View.OnClickL
                 }
                 progressDialog.setMessage("正在登录江科大VPN系统...");
                 progressDialog.show();
-                vpnSource = new VpnSource(user, pwd);
+                APPAplication.vpnSource.updateUserPwd(user, pwd);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        vpn_status_code = vpnSource.checkVpnUser();
+                        vpn_status_code = APPAplication.vpnSource.checkVpnUser();
                         handler.sendEmptyMessage(1);
                     }
                 }).start();

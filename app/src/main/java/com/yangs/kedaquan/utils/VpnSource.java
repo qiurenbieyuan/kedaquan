@@ -89,6 +89,11 @@ public class VpnSource {
         return location;
     }
 
+    public void updateUserPwd(String user, String pwd) {
+        this.vpn_user = user;
+        this.vpn_pwd = pwd;
+    }
+
     /*
     0: valid
     -1: cookie is not valid
@@ -98,8 +103,7 @@ public class VpnSource {
         int code;
         String url = "https://vpn.just.edu.cn/,DanaInfo=www.just.edu.cn,Port=80+";
         Request request = new Request.Builder().url(url)
-                .headers(requestHeaders).addHeader("Cookie", APPAplication.save
-                        .getString("vpn_cookie", "")).build();
+                .headers(requestHeaders).addHeader("Cookie", cookie).build();
         try {
             Response response = mOkHttpClient.newCall(request).execute();
             String location = response.header("location");
@@ -208,6 +212,8 @@ public class VpnSource {
             if (info.contains("密码或用户名不正确")) {
                 return -1;
             } else {
+//                cookie = cookie + ";" + response.headers("Set-Cookie").get(0);
+//                APPAplication.save.edit().putString("vpn_cookie", cookie).apply();
                 return 0;
             }
         } catch (Exception e) {

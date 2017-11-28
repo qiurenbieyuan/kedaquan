@@ -221,6 +221,10 @@ public class FindFragment extends LazyLoadFragment implements OnBannerListener, 
                                 break;
                             case -1:
                                 APPAplication.showToast("学号或密码错误", 0);
+                                APPAplication.isTyLogin = false;
+                                APPAplication.save.edit()
+                                        .putString("ty_user", "")
+                                        .putString("ty_pwd", "").apply();
                                 break;
                             case -2:
                                 APPAplication.showToast("网络出错", 0);

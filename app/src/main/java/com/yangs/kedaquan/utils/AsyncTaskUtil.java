@@ -165,7 +165,7 @@ public class AsyncTaskUtil extends AsyncTask<String, Double, Boolean> {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= 24) {
                 //兼容安卓7.0以上
-                Uri apkUri = FileProvider.getUriForFile(mContext, "com.yangs.just.fileprovider", file);
+                Uri apkUri = FileProvider.getUriForFile(mContext, "com.yangs.kedaquan.fileprovider", file);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
             } else {

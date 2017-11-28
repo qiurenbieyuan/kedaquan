@@ -86,12 +86,14 @@ public class ScoreActivity extends AppCompatActivity implements SwipeRefreshLayo
         tv_empty = findViewById(R.id.score_layout_tv);
         list = new ArrayList<>();
         scoreAdapter = new ScoreAdapter(list);
-        datalist = new String[5];
+        datalist = new String[7];
         datalist[0] = "2015-2016-1";
         datalist[1] = "2015-2016-2";
-        datalist[2] = "2016-2017-1";
-        datalist[3] = "2016-2017-2";
-        datalist[4] = "2017-2018-1";
+        datalist[2] = "2015-2016学年";
+        datalist[3] = "2016-2017-1";
+        datalist[4] = "2016-2017-2";
+        datalist[5] = "2016-2017学年";
+        datalist[6] = "2017-2018-1";
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(scoreAdapter);
         scoreAdapter.setOnItemOnClickListener(this);
@@ -116,9 +118,9 @@ public class ScoreActivity extends AppCompatActivity implements SwipeRefreshLayo
                         }
                     }).create();
         }
-        term_dialog.show();
         xh = APPAplication.save.getString("xh", "");
         pwd = APPAplication.save.getString("pwd", "");
+        term_dialog.show();
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
@@ -223,42 +225,109 @@ public class ScoreActivity extends AppCompatActivity implements SwipeRefreshLayo
                 source = new getKebiaoSource(xh, pwd, ScoreActivity.this);
                 switch (source.checkUser()) {
                     case 0:
-                        source.getScore(year, new getKebiaoSource.OnResponseResult() {
-                            @Override
-                            public void onResponseResult(int code, String result) {
-                                if (code == -1) {
-                                    handler.sendEmptyMessage(4);
-                                    return;
+                        if (year.contains("学年")) {
+                            String year_1 = year.replace("学年", "") + "-1";
+                            final String year_2 = year.replace("学年", "") + "-2";
+                            source.getScore(year_1, new getKebiaoSource.OnResponseResult() {
+                                @Override
+                                public void onResponseResult(int code, String result) {
+                                    if (code == -1) {
+                                        handler.sendEmptyMessage(4);
+                                        return;
+                                    }
+                                    list.clear();
+                                    Document document = Jsoup.parse(result);
+                                    Elements score = document.getElementsByAttributeValue("id",
+                                            "dataList").select("tr");
+                                    for (int j = 1; j < score.size(); j++) {
+                                        Score score1 = new Score();
+                                        Elements ee = score.get(j).select("td");
+                                        score1.setCno(ee.get(2).text());
+                                        score1.setName(ee.get(3).text());
+                                        score1.setScore(ee.get(4).text());
+                                        score1.setXf(ee.get(5).text());
+                                        score1.setKs(ee.get(6).text());
+                                        score1.setKhfx(ee.get(7).text());
+                                        score1.setKcsx(ee.get(8).text());
+                                        score1.setKcxz(ee.get(9).text());
+                                        if ((score1.getKcsx().equals("必修") || score1.getKcsx().equals("任选"))
+                                                && !score1.getName().contains("体育"))
+                                            score1.setCheck(true);
+                                        else
+                                            score1.setCheck(false);
+                                        list.add(score1);
+                                    }
+                                    source.getScore(year_2, new getKebiaoSource.OnResponseResult() {
+                                        @Override
+                                        public void onResponseResult(int code, String result) {
+                                            Document document = Jsoup.parse(result);
+                                            Elements score = document.getElementsByAttributeValue("id",
+                                                    "dataList").select("tr");
+                                            for (int j = 1; j < score.size(); j++) {
+                                                Score score1 = new Score();
+                                                Elements ee = score.get(j).select("td");
+                                                score1.setCno(ee.get(2).text());
+                                                score1.setName(ee.get(3).text());
+                                                score1.setScore(ee.get(4).text());
+                                                score1.setXf(ee.get(5).text());
+                                                score1.setKs(ee.get(6).text());
+                                                score1.setKhfx(ee.get(7).text());
+                                                score1.setKcsx(ee.get(8).text());
+                                                score1.setKcxz(ee.get(9).text());
+                                                if ((score1.getKcsx().equals("必修") || score1.getKcsx().equals("任选"))
+                                                        && !score1.getName().contains("体育"))
+                                                    score1.setCheck(true);
+                                                else
+                                                    score1.setCheck(false);
+                                                list.add(score1);
+                                            }
+                                            calculateGPA(false);
+                                            if (list.size() > 0)
+                                                handler.sendEmptyMessage(1);
+                                            else
+                                                handler.sendEmptyMessage(2);
+                                        }
+                                    });
                                 }
-                                list.clear();
-                                Document document = Jsoup.parse(result);
-                                Elements score = document.getElementsByAttributeValue("id",
-                                        "dataList").select("tr");
-                                for (int j = 1; j < score.size(); j++) {
-                                    Score score1 = new Score();
-                                    Elements ee = score.get(j).select("td");
-                                    score1.setCno(ee.get(2).text());
-                                    score1.setName(ee.get(3).text());
-                                    score1.setScore(ee.get(4).text());
-                                    score1.setXf(ee.get(5).text());
-                                    score1.setKs(ee.get(6).text());
-                                    score1.setKhfx(ee.get(7).text());
-                                    score1.setKcsx(ee.get(8).text());
-                                    score1.setKcxz(ee.get(9).text());
-                                    if ((score1.getKcsx().equals("必修") || score1.getKcsx().equals("任选"))
-                                            && !score1.getName().contains("体育"))
-                                        score1.setCheck(true);
+                            });
+                        } else {
+                            source.getScore(year, new getKebiaoSource.OnResponseResult() {
+                                @Override
+                                public void onResponseResult(int code, String result) {
+                                    if (code == -1) {
+                                        handler.sendEmptyMessage(4);
+                                        return;
+                                    }
+                                    list.clear();
+                                    Document document = Jsoup.parse(result);
+                                    Elements score = document.getElementsByAttributeValue("id",
+                                            "dataList").select("tr");
+                                    for (int j = 1; j < score.size(); j++) {
+                                        Score score1 = new Score();
+                                        Elements ee = score.get(j).select("td");
+                                        score1.setCno(ee.get(2).text());
+                                        score1.setName(ee.get(3).text());
+                                        score1.setScore(ee.get(4).text());
+                                        score1.setXf(ee.get(5).text());
+                                        score1.setKs(ee.get(6).text());
+                                        score1.setKhfx(ee.get(7).text());
+                                        score1.setKcsx(ee.get(8).text());
+                                        score1.setKcxz(ee.get(9).text());
+                                        if ((score1.getKcsx().equals("必修") || score1.getKcsx().equals("任选"))
+                                                && !score1.getName().contains("体育"))
+                                            score1.setCheck(true);
+                                        else
+                                            score1.setCheck(false);
+                                        list.add(score1);
+                                    }
+                                    calculateGPA(false);
+                                    if (list.size() > 0)
+                                        handler.sendEmptyMessage(1);
                                     else
-                                        score1.setCheck(false);
-                                    list.add(score1);
+                                        handler.sendEmptyMessage(2);
                                 }
-                                calculateGPA(false);
-                                if (list.size() > 0)
-                                    handler.sendEmptyMessage(1);
-                                else
-                                    handler.sendEmptyMessage(2);
-                            }
-                        });
+                            });
+                        }
                         break;
                     case -1:
                         handler.sendEmptyMessage(3);
